@@ -3,7 +3,7 @@ const app = express()
 app.set('view engine', 'hbs');
 
 app.get('/', (req, res) => {
-    res.render('staff')
+    res.render('staffTrainee')
 });
 
 app.use(express.static(__dirname + '/public'));
