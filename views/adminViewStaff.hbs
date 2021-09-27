@@ -48,15 +48,9 @@
               <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
               Training Staff
             </a>
-<<<<<<< Updated upstream
-            <a class="nav-link" href="/admin/adminAddTrainer" style="text-decoration: none;" >
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                New Trainer
-=======
             <a class="nav-link" href="/admin/adminViewTrainer" style="text-decoration: none;">
               <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
               Trainer
->>>>>>> Stashed changes
             </a>
           </div>
         </div>
@@ -65,12 +59,16 @@
   </div>
   <div class="container py-5" style="margin-top: 3%; margin-left: 15%">
     <center>
-      <div class="form-group" style="width: 30%">
+      <div class="form-group">
         <label>Search by Name:</label>
         <div class="input-group">
-          <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-            aria-describedby="search-addon" />
-          <hr -3 />
+          <a href="/admin/adminAddStaff" class="btn btn-success" style="margin-left: 5%;">
+            <span class="glyphicon glyphicon-plus"></span>
+            <span><strong>Add new account</strong></span>
+          </a>
+          <input type="search" style="margin-left: 20%; width: 40%;  flex: none;" class="form-control rounded"
+            placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+          <hr -3>
           <button type="button" class="btn btn-success">search</button>
         </div>
       </div>
@@ -87,6 +85,7 @@
                   <th class="max-width">Name</th>
                   <th class="sortable">Date</th>
                   <th>Role</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -94,16 +93,43 @@
                   <td class="text-nowrap align-middle">Adam Cotter</td>
                   <td class="text-nowrap align-middle"><span>09 Dec 2017</span></td>
                   <td class="text-nowrap align-middle"><span>Training staff</span></td>
+                  <td class="text-center align-middle">
+                    <div class="btn-group align-top">
+                      <a href="/admin/adminEditStaff" class="btn btn-success">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        <span><strong>Edit</strong></span>
+                      </a>
+                      <a href="#" class="btn btn-success">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span><strong>Delete</strong></span>
+                      </a>
+                      <a href="#" class="btn btn-success">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        <span><strong>Set Default Pass</strong></span>
+                      </a>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td class="text-nowrap align-middle">Pauline Noble</td>
                   <td class="text-nowrap align-middle"><span>26 Jan 2018</span></td>
                   <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                </tr>
-                <tr>
-                  <td class="text-nowrap align-middle">Sherilyn Metzel</td>
-                  <td class="text-nowrap align-middle"><span>27 Jan 2018</span></td>
-                  <td class="text-nowrap align-middle"><span>Trainer</span></td>
+                  <td class="text-center align-middle">
+                    <div class="btn-group align-top">
+                      <a href="/admin/adminEditStaff" class="btn btn-success">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        <span><strong>Edit</strong></span>
+                      </a>
+                      <a href="#" class="btn btn-success">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span><strong>Delete</strong></span>
+                      </a>
+                      <a href="#" class="btn btn-success">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        <span><strong>Set Default Pass</strong></span>
+                      </a>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
