@@ -7,9 +7,9 @@ router.get('/admin', (req, res)=>{
     res.render('admin')
 })
 
-router.post('/login', (req, res)=>{
-    res.redirect("/admin")
-})
+// router.post('/login', (req, res)=>{
+//     res.redirect("/admin")
+// })
 
 router.get('/admin/adminAddStaff', (req, res) => {
     res.render('adminAddStaff')
