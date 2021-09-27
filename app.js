@@ -3,9 +3,8 @@ const app = express()
 app.set('view engine', 'hbs');
 
 app.get('/', (req, res) => {
-    res.render('admin')
+    res.render('staff')
 });
-
 
 app.use(express.static(__dirname + '/public'));
 var adminController = require('./routes/auth.js');
