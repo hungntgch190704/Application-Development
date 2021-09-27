@@ -27,5 +27,12 @@ router.get('/admin/adminEditTrainer', (req, res) => {
     res.render('adminEditTrainer')
 });
 
+router.get('/admin/adminViewStaff', (req, res) => {
+    res.render('adminViewStaff')
+});
+
+router.get('/admin/adminViewTrainer', (req, res) => {
+    res.render('adminViewTrainer')
+});
 
 module.exports = router;

@@ -3,7 +3,11 @@ const app = express()
 app.set('view engine', 'hbs');
 
 app.get('/', (req, res) => {
+<<<<<<< Updated upstream
     res.render('index1')
+=======
+    res.render('admin')
+>>>>>>> Stashed changes
 });
 
 app.use(express.static(__dirname + '/public'));

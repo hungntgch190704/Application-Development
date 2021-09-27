@@ -1,41 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <title>Change Password</title>
-    <style>
-        body{
-            margin-top:20px;
-            background:#a5e2a3;
-        }
-    </style>
-</head>
-<body>
 
-    <div class="container">
-        <h2 class="modal-title">Change Password of User</h2>
-        <br>
-        <div class="form-group">
-        <label>Current Password</label>
-        <input class="form-control" type="password" placeholder="••••••">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <title>New Staff</title>
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="#" style="font-size: 30px;"><b>fpt</b>
+            CO.</a>
+        <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    {{#if loginName}}
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">{{loginName}}<i
+                            class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                    </ul>
+                    {{/if}}
+                </li>
+            </ul>
         </div>
-        <div class="form-group">
-        <label>New Password</label>
-        <input class="form-control" type="password" placeholder="••••••">
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav" style="font-size: 12px;">
+                        <div class="sb-sidenav-menu-heading" style="font-size: 15px;">New
+                            User</div>
+                        <a class="nav-link" href="/admin/adminViewStaff" style="text-decoration: none;">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Training Staff
+                        </a>
+                        <a class="nav-link" href="/admin/adminViewTrainer" style="text-decoration: none;">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Trainer
+                        </a>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <div class="form-group">
-        <label>Confirm Password</label>
-        <input class="form-control" type="password" placeholder="••••••">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <a href="/" class="btn btn-warning">Cancel</a>
+    </div>
+    <div class="modal-dialog modal-lg" role="document" style="margin-top: 3%; margin-left: 15%">
+        <div class="container py-5 modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Change Password of User</h2>
+            </div>
+            <div class="modal-body">
+                <div class="py-1">
+                    <form class="form" novalidate="">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Current Password</label>
+                                            <input class="form-control" type="password" placeholder="••••••">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Confirm Password</label>
+                                            <input class="form-control" type="password" placeholder="••••••">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col d-flex justify-content-end">
+                                <button class="btn btn-primary" type="submit">Save</button>
+                                <a href="/admin" class="btn btn-warning">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </body>
