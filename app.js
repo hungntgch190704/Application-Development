@@ -1,13 +1,12 @@
 const express = require('express');
-const app = express()
+const mongoose = require('./db/db');
+const bodyParser = require('body-parser');
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'hbs');
 
 app.get('/', (req, res) => {
-<<<<<<< Updated upstream
     res.render('index1')
-=======
-    res.render('admin')
->>>>>>> Stashed changes
 });
 
 app.use(express.static(__dirname + '/public'));

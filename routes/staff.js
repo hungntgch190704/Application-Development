@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-
+const adminController = require('../controller/admin');
 //localhost/admin
 
 router.get('/staff', (req, res)=>{
     res.render('staffIndex')
 })
+
+router.post('/doAddStaff', adminController.addUser);
 
 router.post('/login', (req, res)=>{
     res.redirect("/staff")
