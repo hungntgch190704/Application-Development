@@ -41,5 +41,25 @@ router.get('/staff/course', (req, res) => {
     res.render('staffCourse')
 });
 
+router.get('/staff/course/add', (req, res) => {
+    res.render('staffAddCourse')
+});
+
+router.get('/staff/course/edit', (req, res) => {
+    res.render('staffEditCourse')
+});
+
+// Course Details
+router.get('/staff/CourseDetail', (req, res) => {
+    res.render('staffCourseDetail')
+});
+
+router.get('/staff/AssignT', (req, res) => {
+    res.render('staffAssignT')
+});
+
+router.get('/staff/courseDetail/view', (req, res) => {
+    res.render('staffViewCourseDetail')
+});
 
 module.exports = router;
