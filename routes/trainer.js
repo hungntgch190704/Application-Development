@@ -14,5 +14,8 @@ router.get('/trainer/viewTrainee', (req, res) => {
     res.render('trainerViewTrainee')
 });
 
+router.get('/trainer/viewCourse', (req, res) => {
+    res.render('trainerViewCourse')
+});
 
 module.exports = router;
