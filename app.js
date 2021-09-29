@@ -19,6 +19,9 @@ app.use('/', adminController);
 var staffController = require('./routes/staff.js');
 app.use('/', staffController);
 
+var trainerController = require('./routes/trainer.js');
+app.use('/', trainerController);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT);
 console.log('listening on port' + PORT);
