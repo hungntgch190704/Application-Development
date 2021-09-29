@@ -7,7 +7,12 @@ const trainerSchema = new mongoose.Schema({
     },
     email:{
         type: String,
-        required: true
+        required: true,
+        unique: true
+    },
+    speciality: {
+        type: String,
+        required: true,
     },
     age:{
         type: Number,

@@ -1,15 +1,14 @@
 const mongoose = require('../db/db');
 
 const accSchema = new mongoose.Schema({
-    Username:{
-        type: String, 
-        required: true,
-        unique: true
-    },
-    Password: {
+    email:{
         type: String,
         required: true,
         unique: true
+    },
+    password: {
+        type: String,
+        required: true,
     },
     Role:{
         type: String,

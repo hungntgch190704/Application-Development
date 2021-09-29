@@ -1,15 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const adminController = require('../controller/admin');
-const Course = require('../models/course');
+const mongoose = require('mongoose');
+const Trainee = require('../models/trainee');
 const staffController = require('../controller/staff');
-
-router.post('/doAddStaff', adminController.addUser);
-
-router.post('/login', (req, res)=>{
-    res.redirect("/staff")
-})
-
+//localhost/admin
+const Course = require('../models/course');
 
 router.post('/login', (req, res)=>{
     res.redirect("/staff")
@@ -18,14 +13,17 @@ router.post('/login', (req, res)=>{
 router.get('/staff', (req, res)=>{
     res.render('staffIndex');
 })
+//trainee
 
-router.get('/staff/trainee', (req, res) => {
-    res.render('staffTrainee')
+router.get('/staff/trainee', async(req, res) => {
+    let trainees = await Trainee.find();
+    res.render('staffTrainee', { trainees: trainees });
 });
-
 router.get('/staff/trainee/add', (req, res) => {
     res.render('staffAddTrainee')
 });
+
+router.post('/doAddTrainee', staffController.addTrainee);
 
 router.get('/staff/trainee/edit', (req, res) => {
     res.render('staffEditTrainee')
@@ -39,6 +37,8 @@ router.get('/staff/courseCategory', (req, res) => {
 router.get('/staff/courseCategory/add', (req, res) => {
     res.render('staffAddCourseCategory')
 });
+
+router.post('/doAddCategory', staffController.addCategory);
 
 router.get('/staff/courseCategory/edit', (req, res) => {
     res.render('staffEditCourseCategory')
@@ -105,8 +105,6 @@ router.get('/staff/course/delete', async (req, res) => {
     });
     res.redirect('/staff/course');
 });
-
-
 
 
 
