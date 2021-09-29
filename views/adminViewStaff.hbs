@@ -29,55 +29,38 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th class="max-width">Name</th>
-                  <th class="sortable">Date</th>
-                  <th>Role</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Age</th>
+                  <th>Address</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
+                {{#each listStaff}}
                 <tr>
-                  <td class="text-nowrap align-middle">Adam Cotter</td>
-                  <td class="text-nowrap align-middle"><span>09 Dec 2017</span></td>
-                  <td class="text-nowrap align-middle"><span>Training staff</span></td>
+                  <td class="text-nowrap align-middle">{{name}}</td>
+                  <td class="text-nowrap align-middle">{{email}}</td>
+                  <td class="text-nowrap align-middle">{{age}}</td>
+                  <td class="text-nowrap align-middle">{{address}}</td>
                   <td class="text-center align-middle">
                     <div class="btn-group align-top">
-                      <a href="/admin/adminEditStaff" class="btn btn-success">
+                      <a href="/admin/adminEditStaff?id={{_id}}" class="btn btn-success">
                         <span class="glyphicon glyphicon-edit"></span>
                         <span><strong>Edit</strong></span>
                       </a>
-                      <a href="#" class="btn btn-success">
+                      <a href="/admin/adminDeleteStaff?id={{_id}}" class="btn btn-danger" onclick="return confirm('Are you sure')">
                         <span class="glyphicon glyphicon-remove"></span>
                         <span><strong>Delete</strong></span>
                       </a>
-                      <a href="#" class="btn btn-success">
+                      <a href="#" class="btn btn-warning">
                         <span class="glyphicon glyphicon-cog"></span>
                         <span><strong>Set Default Pass</strong></span>
                       </a>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td class="text-nowrap align-middle">Pauline Noble</td>
-                  <td class="text-nowrap align-middle"><span>26 Jan 2018</span></td>
-                  <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                  <td class="text-center align-middle">
-                    <div class="btn-group align-top">
-                      <a href="/admin/adminEditStaff" class="btn btn-success">
-                        <span class="glyphicon glyphicon-edit"></span>
-                        <span><strong>Edit</strong></span>
-                      </a>
-                      <a href="#" class="btn btn-success">
-                        <span class="glyphicon glyphicon-remove"></span>
-                        <span><strong>Delete</strong></span>
-                      </a>
-                      <a href="#" class="btn btn-success">
-                        <span class="glyphicon glyphicon-cog"></span>
-                        <span><strong>Set Default Pass</strong></span>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
+                {{/each}}
               </tbody>
             </table>
           </div>
