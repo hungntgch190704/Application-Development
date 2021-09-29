@@ -12,15 +12,15 @@
             </div>
             <div class="modal-body">
                 <div class="py-1">
-                    <form class="form" novalidate="">
+                    <form class="form" method="POST" action="/doEditCategory">
                         <div class="row">
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
+                                        <input type="hidden" name="id" value="{{aCategory.id}}">
                                         <div class="form-group">
                                             <label>Course Category Name</label>
-                                            <input class="form-control" type="text" name="name"
-                                                placeholder="Course Category Name">
+                                            <input class="form-control" type="text" name="name" value="{{aCategory.categoryName}}">
                                         </div>
                                     </div>
                                 </div>
@@ -28,8 +28,7 @@
                                     <div class="col mb-3">
                                         <div class="form-group">
                                             <label>Description</label>
-                                            <textarea class="form-control" rows="5"
-                                                placeholder="Description"></textarea>
+                                            <textarea class="form-control" name="description" rows="5">{{aCategory.description}}</textarea>
                                         </div>
                                     </div>
                                 </div>

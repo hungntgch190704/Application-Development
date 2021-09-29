@@ -38,82 +38,28 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{#each trainees}}
                                 <tr>
 
-                                    <td class="text-nowrap align-middle">Adam Cotter</td>
-                                    <td class="text-nowrap align-middle">abc@abc</td>
-                                    <td class="text-nowrap align-middle"><span>09 Dec 2017</span></td>
-                                    <td class="text-nowrap align-middle"><span>Training staff</span></td>
+                                    <td class="text-nowrap align-middle">{{name}}</td>
+                                    <td class="text-nowrap align-middle">{{email}}</td>
+                                    <td class="text-nowrap align-middle"><span>{{dateOfBirth}}</span></td>
+                                    <td class="text-nowrap align-middle"><span>{{education}}</span></td>
                                     <td class="text-center align-middle">
                                         <div class="btn-group align-top">
-                                            <a href="/staff/trainee/edit" class="btn btn-success">
+                                            <a href="/staff/trainee/edit?id={{id}}" class="btn btn-success">
                                                 <span class="glyphicon glyphicon-edit"></span>
                                                 <span><strong>Edit</strong></span>
                                             </a>
-                                            <a href="#" class="btn btn-success">
+                                            <a href="/staff/trainee/delete?id={{id}}"
+                                                onclick="return confirm('Are you sure')" class="btn btn-danger">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                                 <span><strong>Delete</strong></span>
                                             </a>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-
-                                    <td class="text-nowrap align-middle">Pauline Noble</td>
-                                    <td class="text-nowrap align-middle">abc@abc</td>
-                                    <td class="text-nowrap align-middle"><span>26 Jan 2018</span></td>
-                                    <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                                    <td class="text-center align-middle">
-                                        <div class="btn-group align-top">
-                                            <a href="/staff/trainee/edit" class="btn btn-success">
-                                                <span class="glyphicon glyphicon-edit"></span>
-                                                <span><strong>Edit</strong></span>
-                                            </a>
-                                            <a href="#" class="btn btn-success">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                                <span><strong>Delete</strong></span>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-
-                                    <td class="text-nowrap align-middle">Sherilyn Metzel</td>
-                                    <td class="text-nowrap align-middle">abc@abc</td>
-                                    <td class="text-nowrap align-middle"><span>27 Jan 2018</span></td>
-                                    <td class="text-nowrap align-middle"><span>Trainer</span></td>
-                                    <td class="text-center align-middle">
-                                        <div class="btn-group align-top">
-                                            <a href="/staff/trainee/edit" class="btn btn-success">
-                                                <span class="glyphicon glyphicon-edit"></span>
-                                                <span><strong>Edit</strong></span>
-                                            </a>
-                                            <a href="#" class="btn btn-success">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                                <span><strong>Delete</strong></span>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-
-                                    <td class="text-nowrap align-middle">Terrie Boaler</td>
-                                    <td class="text-nowrap align-middle">abc@abc</td>
-                                    <td class="text-nowrap align-middle"><span>20 Jan 2018</span></td>
-                                    <td class="text-nowrap align-middle"><span>Trainer</span></td>
-                                    <td class="text-center align-middle">
-                                        <div class="btn-group align-top">
-                                            <a href="/staff/trainee/edit" class="btn btn-success">
-                                                <span class="glyphicon glyphicon-edit"></span>
-                                                <span><strong>Edit</strong></span>
-                                            </a>
-                                            <a href="#" class="btn btn-success">
-                                                <span class="glyphicon glyphicon-remove"></span>
-                                                <span><strong>Delete</strong></span>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                               {{/each}} 
                             </tbody>
                         </table>
                     </div>

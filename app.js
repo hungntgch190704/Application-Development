@@ -13,11 +13,14 @@ app.get('/', (req, res) => {
 });
 
 app.use(express.static(__dirname + '/public'));
-var adminController = require('./routes/auth.js');
-app.use('/', adminController);
+// var adminController = require('./routes/auth.js');
+// app.use('/', adminController);
 
 var staffController = require('./routes/staff.js');
 app.use('/', staffController);
+
+var trainerController = require('./routes/trainer.js');
+app.use('/', trainerController);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT);
