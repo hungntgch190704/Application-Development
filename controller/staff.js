@@ -80,7 +80,17 @@ exports.doEditCategory = async (req, res) =>{
         console.log(error);
         res.redirect('/staff/courseCategory');
     }}
-
+    exports.deleteCategory = async (req, res) =>{
+        let id = req.query.id;
+        console.log(id);
+        category.deleteOne({'id':id},(err) => {
+            if (err)
+                throw err;
+            else 
+                console.log('Account is deleted');
+        });
+        res.redirect('/staff/courseCategory');
+    }
 //course
 exports.addCourse = async (req, res) =>{
     let newCourse = new course({

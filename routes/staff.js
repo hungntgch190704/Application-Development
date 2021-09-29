@@ -33,6 +33,8 @@ router.post('/doAddCategory', staffController.addCategory);
 
 router.get('/staff/courseCategory/edit', staffController.editCategory);
 router.post('/doEditCategory', staffController.doEditCategory);
+router.get('/staff/courseCategory/delete', staffController.deleteCategory);
+
 
 // Course
 // --------------------------------------
