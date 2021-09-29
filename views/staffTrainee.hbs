@@ -47,14 +47,15 @@
                                     <td class="text-nowrap align-middle"><span>{{education}}</span></td>
                                     <td class="text-center align-middle">
                                         <div class="btn-group align-top">
-                                            <a href="/staff/trainee/edit/{{id}}" class="btn btn-success">
+                                            <a href="/staff/trainee/edit?id={{id}}" class="btn btn-success">
                                                 <span class="glyphicon glyphicon-edit"></span>
                                                 <span><strong>Edit</strong></span>
                                             </a>
-                                            <form action="/delete/{{id}}" method="post" class="btn btn-danger">
+                                            <a href="/staff/trainee/delete?id={{id}}"
+                                                onclick="return confirm('Are you sure')" class="btn btn-danger">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                                 <span><strong>Delete</strong></span>
-                                            </form>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

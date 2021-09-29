@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const Trainee = require('../models/trainee');
 const staffController = require('../controller/staff');
 //localhost/admin
 const Course = require('../models/course');
@@ -15,34 +14,25 @@ router.get('/staff', (req, res)=>{
 })
 //trainee
 
-router.get('/staff/trainee', async(req, res) => {
-    let trainees = await Trainee.find();
-    res.render('staffTrainee', { trainees: trainees });
-});
+router.get('/staff/trainee', staffController.viewAllTrainee);
 router.get('/staff/trainee/add', (req, res) => {
     res.render('staffAddTrainee')
 });
-
 router.post('/doAddTrainee', staffController.addTrainee);
 
-router.get('/staff/trainee/edit', (req, res) => {
-    res.render('staffEditTrainee')
-});
+router.get('/staff/trainee/edit', staffController.editTrainee);
+router.post('/doEditTrainee', staffController.doEditTrainee);
 
 //Course Category
-router.get('/staff/courseCategory', (req, res) => {
-    res.render('staffCourseCategory')
-});
+router.get('/staff/courseCategory', staffController.viewAllCategory);
 
 router.get('/staff/courseCategory/add', (req, res) => {
     res.render('staffAddCourseCategory')
 });
-
 router.post('/doAddCategory', staffController.addCategory);
 
-router.get('/staff/courseCategory/edit', (req, res) => {
-    res.render('staffEditCourseCategory')
-});
+router.get('/staff/courseCategory/edit', staffController.editCategory);
+router.post('/doEditCategory', staffController.doEditCategory);
 
 // Course
 // --------------------------------------

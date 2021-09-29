@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
     res.render('index')
 });
 
-// app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'));
 // var adminController = require('./routes/auth.js');
 // app.use('/', adminController);
 
