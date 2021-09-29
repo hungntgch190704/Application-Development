@@ -1,5 +1,6 @@
 const Account = require('../models/user');
 const staff = require('../models/staff');
+
 const express = require('express');
 exports.addUser = async (req, res) =>{
     let newStaff = new staff({
@@ -10,6 +11,7 @@ exports.addUser = async (req, res) =>{
     })
     newStaff = await newStaff.save();
     console.log(newStaff);
-    // console.log(req.body.email);
+
     res.redirect('/admin/adminViewStaff');
 }
+

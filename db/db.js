@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
-try{
+try {
     mongoose.connect('mongodb+srv://group1:group1@cluster0.x52v4.mongodb.net/Application', {
-    useNewUrlParser: true,
-    // useFindAndModify: true
-}
-)
-console.log("connect success")
-}catch (e) {
+        useNewUrlParser: true,
+        // useFindAndModify: true
+    }
+    )
+    console.log("connect success")
+} catch (e) {
     console.log(e)
 }
 
