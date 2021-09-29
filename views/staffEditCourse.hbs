@@ -14,20 +14,22 @@
             </div>
             <div class="modal-body">
                 <div class="py-1">
-                    <form class="form" novalidate="">
+                    <form class="form" method="post" action="/doEditCourse">
                         <div class="row">
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
                                             <label>Course Name</label>
-                                            <input class="form-control" type="text" name="name" placeholder="Full name">
+                                            <input type="hidden" name="id" value="{{_course._id}}">
+                                            <input class="form-control" type="text" value="{{_course.name}}" name="name">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1">Course Category</label>
-                                            <select class="form-select" aria-label="Disabled select example">
+                                            <select name="category" class="form-select"
+                                                aria-label="Disabled select example">
                                                 <option value="1">Marketing</option>
                                                 <option value="2">Graphic</option>
                                                 <option value="3">IT</option>
@@ -37,8 +39,8 @@
                                     <div class="row">
                                         <div class="form-group">
                                             <label>Description</label>
-                                            <textarea class="form-control" rows="5"
-                                                placeholder="Description"></textarea>
+                                            <textarea name="description" class="form-control" rows="5"
+                                               >{{_course.description}}</textarea>
                                         </div>
                                     </div>
                                 </div>

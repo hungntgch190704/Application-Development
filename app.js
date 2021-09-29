@@ -9,14 +9,13 @@ var hbs = require('hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
 app.get('/', (req, res) => {
-    res.render('index1')
+    res.render('index')
 });
 
 // app.use(express.static(__dirname + '/public'));
 // var adminController = require('./routes/auth.js');
 // app.use('/', adminController);
 
-app.use(express.static(__dirname + '/public'));
 var staffController = require('./routes/staff.js');
 app.use('/', staffController);
 

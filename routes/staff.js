@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const Trainee = require('../models/trainee');
 const staffController = require('../controller/staff');
 //localhost/admin
+const Course = require('../models/course');
+
 router.post('/login', (req, res)=>{
     res.redirect("/staff")
 });
@@ -17,7 +19,6 @@ router.get('/staff/trainee', async(req, res) => {
     let trainees = await Trainee.find();
     res.render('staffTrainee', { trainees: trainees });
 });
-
 router.get('/staff/trainee/add', (req, res) => {
     res.render('staffAddTrainee')
 });
@@ -44,17 +45,68 @@ router.get('/staff/courseCategory/edit', (req, res) => {
 });
 
 // Course
-router.get('/staff/course', (req, res) => {
-    res.render('staffCourse')
-});
+// --------------------------------------
+// --------------------------------------
 
+// Add Course to DB
+router.post('/doAddCourse', staffController.addCourse);
 router.get('/staff/course/add', (req, res) => {
     res.render('staffAddCourse')
 });
 
-router.get('/staff/course/edit', (req, res) => {
-    res.render('staffEditCourse')
+// Render full course information
+router.get('/staff/course', async (req, res) => {
+    let course = await Course.find().sort({timeCreated:'desc'});
+    res.render('staffCourse',{_course: course})
 });
+
+// Edit course by ID
+router.get('/staff/course/edit', async (req, res) => {
+    let id = req.query.id;
+    let course = await Course.findById(id);
+    //console.log(course);
+    res.render('staffEditCourse',{_course: course})
+});
+
+// Update course by ID
+router.post('/doEditCourse', async (req, res) => {
+    let id = req.body.id;
+
+    course = await Course.findById(id);
+
+    course.name = req.body.name;
+    course.category = req.body.category;
+    course.description = req.body.description;
+    try{
+        course = await course.save();
+        res.redirect('/staff/course');
+    }
+    catch(error){
+        console.log(error);
+        res.redirect('/staff/course');
+    }
+
+});
+
+// Search course by name
+router.post('/doSearchCourse',async (req, res)=>{
+    console.log(1);
+    const searchText = req.body.keyword;
+    console.log(searchText);
+    let course = await Course.find({name: searchText}).sort({timeCreated:'desc'});
+    console.log(course);
+    res.render('staffCourse',{_course: course})
+})
+
+// Delete Course
+router.get('/staff/course/delete', async (req, res) => {
+    let id = req.query.id;
+    Course.findByIdAndRemove(id).then(data={
+    });
+    res.redirect('/staff/course');
+});
+
+
 
 // Course Details
 router.get('/staff/CourseDetail', (req, res) => {
@@ -68,5 +120,8 @@ router.get('/staff/AssignT', (req, res) => {
 router.get('/staff/courseDetail/view', (req, res) => {
     res.render('staffViewCourseDetail')
 });
+
+
+
 
 module.exports = router;
