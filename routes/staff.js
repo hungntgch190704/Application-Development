@@ -22,7 +22,7 @@ router.post('/doAddTrainee', staffController.addTrainee);
 
 router.get('/staff/trainee/edit', staffController.editTrainee);
 router.post('/doEditTrainee', staffController.doEditTrainee);
-
+router.get('/staff/trainee/delete', staffController.deleteTrainee);
 //Course Category
 router.get('/staff/courseCategory', staffController.viewAllCategory);
 
@@ -79,6 +79,7 @@ router.post('/doEditCourse', async (req, res) => {
     }
 
 });
+
 
 // Search course by name
 router.post('/doSearchCourse',async (req, res)=>{

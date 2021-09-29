@@ -48,6 +48,21 @@ exports.doEditTrainee = async (req, res) =>{
     }
     
 }
+exports.deleteTrainee = async (req, res) => {
+    let id = req.query.id;
+    let aTrainee = await trainee.findById(id);
+    let email = aTrainee.email;
+    console.log(email);
+    Account.deleteOne({ 'email': email }, (err) => {
+        if (err)
+            throw err;
+        else 
+            console.log('Account is deleted');
+    })
+    trainee.findByIdAndRemove(id).then(data={});
+    res.redirect('/staff/trainee');
+}
+
 //category
 exports.viewAllCategory = async(req,res)=>{
     let categories = await category.find();
@@ -87,7 +102,7 @@ exports.doEditCategory = async (req, res) =>{
             if (err)
                 throw err;
             else 
-                console.log('Account is deleted');
+                console.log('Category is deleted');
         });
         res.redirect('/staff/courseCategory');
     }
