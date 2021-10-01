@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="sb-nav-fixed">
+    {{> head}}
+    {{> trainerhead}}
+
+    <div class="container py-5" style="margin-top: 5%; margin-left: 15%">
+        <!-- Searching -->
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col" style="margin-left: 2%">
+                            </div>
+                            <div class="col">
+                                <form class="form" method="post" action="/trainer/searchCourse" style="display: flex; margin-right: 9%;">
+                                    <input type="search" name="keyword" class="form-control rounded" placeholder="Search Course" aria-label="Search"
+                                        aria-describedby="search-addon" />
+                                    <hr -3>
+                                    <button type="button" class="btn btn-success">search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="e-panel card" style="width: 90%; margin-left: 5%">
+            <div class="card-body">
+                <div class="card-title">
+                </div>
+                <div class="e-table">
+                    <div class="table-responsive table-lg mt-3">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="max-width" style="text-align:center">Course Name</th>
+                                    <th class="sortable" style="text-align:center">Course Category</th>
+                                    <th style="text-align:center">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each _course}}
+                                <tr>
+                                    <td class="text-nowrap align-middle">{{name}}</td>
+                                    <td class="text-nowrap align-middle"><span>{{categories}}</span></td>
+                                    <td class="text-nowrap align-middle"><span>{{description}}</span></td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
