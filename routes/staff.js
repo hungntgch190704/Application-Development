@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const staffController = require('../controller/staff');
-//localhost/admin
-const Course = require('../models/course');
+const category = require('../models/coursecategory');
 
 router.post('/login', (req, res)=>{
     res.redirect("/staff")
@@ -35,86 +33,58 @@ router.get('/staff/courseCategory/edit', staffController.editCategory);
 router.post('/doEditCategory', staffController.doEditCategory);
 router.get('/staff/courseCategory/delete', staffController.deleteCategory);
 
-
 // Course
 // --------------------------------------
 // --------------------------------------
 
 // Add Course to DB
 router.post('/doAddCourse', staffController.addCourse);
-router.get('/staff/course/add', (req, res) => {
-    res.render('staffAddCourse')
+
+// Click add
+router.get('/staff/course/add', async (req, res) => {
+    let categories = await category.find();
+    res.render('staffAddCourse',{_categories: categories});
 });
 
-// Render full course information
-router.get('/staff/course', async (req, res) => {
-    let course = await Course.find().sort({timeCreated:'desc'});
-    res.render('staffCourse',{_course: course})
-});
+// View full course information
+router.get('/staff/course', staffController.viewAllCourse);
 
 // Edit course by ID
-router.get('/staff/course/edit', async (req, res) => {
-    let id = req.query.id;
-    let course = await Course.findById(id);
-    //console.log(course);
-    res.render('staffEditCourse',{_course: course})
-});
+router.get('/staff/course/edit', staffController.clickEditCourse);
 
 // Update course by ID
-router.post('/doEditCourse', async (req, res) => {
-    let id = req.body.id;
-
-    course = await Course.findById(id);
-
-    course.name = req.body.name;
-    course.category = req.body.category;
-    course.description = req.body.description;
-    try{
-        course = await course.save();
-        res.redirect('/staff/course');
-    }
-    catch(error){
-        console.log(error);
-        res.redirect('/staff/course');
-    }
-
-});
-
+router.post('/doEditCourse', staffController.doEditCourse);
 
 // Search course by name
-router.post('/doSearchCourse',async (req, res)=>{
-    console.log(1);
-    const searchText = req.body.keyword;
-    console.log(searchText);
-    let course = await Course.find({name: searchText}).sort({timeCreated:'desc'});
-    console.log(course);
-    res.render('staffCourse',{_course: course})
-})
+router.post('/doSearchCourse', staffController.doSearchCourse);
 
 // Delete Course
-router.get('/staff/course/delete', async (req, res) => {
-    let id = req.query.id;
-    Course.findByIdAndRemove(id).then(data={
-    });
-    res.redirect('/staff/course');
+router.get('/staff/course/delete', staffController.doDeleteCourse);
+
+// Course Detail
+// --------------------------------------
+// --------------------------------------
+
+// Add course detail
+router.post('/doAddCourseDetail', staffController.addCourseDetail);
+router.get('/staff/AssignT', async (req, res) => {
+    let categories = await category.find();
+    res.render('staffAssignT',{_categories: categories})
 });
 
+// View Course detail information
+router.get('/staff/CourseDetail', staffController.viewAllCourseDetail);
 
+// Delete course/trainer in course detail
+router.get('/staff/courseDetail/delete', staffController.deleteCourseDetail);
 
-// Course Details
-router.get('/staff/CourseDetail', (req, res) => {
-    res.render('staffCourseDetail')
-});
+// View course detail
+router.get('/staff/courseDetail/view', staffController.viewInsideCourseDetail);
 
-router.get('/staff/AssignT', (req, res) => {
-    res.render('staffAssignT')
-});
+// Delete a trainee in course detail
+router.post('/doDeleteTraineeCourse' , staffController.deleteTraineeCourseDetail);
 
-router.get('/staff/courseDetail/view', (req, res) => {
-    res.render('staffViewCourseDetail')
-});
-
-
-
+// Search couse name in course detail
+router.post('/doSearchCourseDetail', staffController.searchCourseDetail);
 
 module.exports = router;

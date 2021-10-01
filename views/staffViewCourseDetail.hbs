@@ -10,61 +10,75 @@
         <div class="e-panel card" style="width: 90%; margin-left: 5%">
             <div class="card-body">
                 <div class="card-title">
-                    <h2 style="text-align: center">Viewing Course Detail</h2>
-                    <h3>Course Name: Database</h3>
-                    <h3>Category: IT</h3>
-                    <h3>Trainer: Do Hong Quan</h3>
-                    <h3>Trainee table</h3>
-                </div>
-                <div class="e-table">
-                    <div class="table-responsive table-lg mt-3">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th class="max-width" style="text-align:center">Name</th>
-                                    <th class="max-width" style="text-align:center">Email</th>
-                                    <th class="sortable" style="text-align:center">Date of birth</th>
-                                    <th class="sortable" style="text-align:center">Education</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-nowrap align-middle">Adam Cotter</td>
-                                    <td class="text-nowrap align-middle"><span>09 Dec 2017</span></td>
-                                    <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                                    <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-nowrap align-middle">Adam Cotter</td>
-                                    <td class="text-nowrap align-middle"><span>09 Dec 2017</span></td>
-                                    <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                                    <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-nowrap align-middle">Pauline Noble</td>
-                                    <td class="text-nowrap align-middle"><span>26 Jan 2018</span></td>
-                                    <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                                    <td class="text-nowrap align-middle"><span>Training staff</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-nowrap align-middle">Sherilyn Metzel</td>
-                                    <td class="text-nowrap align-middle"><span>27 Jan 2018</span></td>
-                                    <td class="text-nowrap align-middle"><span>Trainer</span></td>
-                                    <td class="text-nowrap align-middle"><span>Trainer</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-nowrap align-middle">Terrie Boaler</td>
-                                    <td class="text-nowrap align-middle"><span>20 Jan 2018</span></td>
-                                    <td class="text-nowrap align-middle"><span>Trainer</span></td>
-                                    <td class="text-nowrap align-middle"><span>Trainer</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <h2 style="text-align: center"><b><i>Viewing Course Detail</i></b></h2>
+                    <div class="e-table">
+                        <div class="table-responsive table-lg mt-3">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="max-width" style="text-align:center">Course Name</th>
+                                        <th class="max-width" style="text-align:center">Category</th>
+                                        <th class="sortable" style="text-align:center">Trainer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-nowrap align-middle" style="text-align:center">
+                                            {{_course_detail.name}}</td>
+                                        <td class="text-nowrap align-middle" style="text-align:center">
+                                            <span>{{_course_detail.category}}</span>
+                                        </td>
+                                        <td class="text-nowrap align-middle" style="text-align:center">
+                                            <span>{{_course_detail.trainer}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <form class="form" method="post" action="/doDeleteTraineeCourse">
+                                <div class="e-table">
+                                    <div class="table-responsive table-lg mt-3">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="max-width" style="text-align:center">Name</th>
+                                                    <th class="max-width" style="text-align:center">Email</th>
+                                                    <th class="sortable" style="text-align:center">Date of birth</th>
+                                                    <th class="sortable" style="text-align:center">Education</th>
+                                                    <th class="sortable" style="text-align:center">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <input type="hidden" name="id" value="{{_course_detail._id}}">
+                                            <tbody>
+                                                {{#each _trainees_detail}}
+                                                <tr>
+                                                    <td class="text-nowrap" style="text-align:center">{{name}}</td>
+                                                    <td class="text-nowrap" style="text-align:center">
+                                                        <span>{{email}}</span>
+                                                    </td>
+                                                    <td class="text-nowrap " style="text-align:center">
+                                                        <span>{{dateOfBirth}}</span>
+                                                    </td>
+                                                    <td class="text-nowrap " style="text-align:center">
+                                                        <span>{{education}}</span>
+                                                    </td>
+                                                    <td class="text-center align-middle">
+                                                        <div class="btn-group align-top">
+                                                            <button type="submit" name="{{@index}}" class="btn btn-danger">
+                                                                <span class="glyphicon glyphicon-remove"></span>
+                                                                <span><strong>Delete</strong></span>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>

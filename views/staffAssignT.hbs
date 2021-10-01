@@ -14,36 +14,43 @@
             </div>
             <div class="modal-body">
                 <div class="py-1">
-                    <form class="form" novalidate="">
+                    <form class="form" method="post" action="/doAddCourseDetail">
                         <div class="row">
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
                                             <label>Course Name</label>
-                                            <input class="form-control" type="text" name="name" placeholder="Full name">
+                                            <input class="form-control" type="text" value="{{old.course_name}}" name="name"
+                                                placeholder="Course name">
+                                            <span class="helper-text text-danger">{{errors.err_courseName}}</span>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1">Course Category</label>
-                                            <select class="form-select" aria-label="Disabled select example">
-                                                <option value="1">Marketing</option>
-                                                <option value="2">Graphic</option>
-                                                <option value="3">IT</option>
+                                            <select name="category" class="form-select"
+                                                aria-label="Disabled select example">
+                                                {{#each _categories}}
+                                                <option value="{{categoryName}}" selected>{{categoryName}}</option>
+                                                {{/each}}
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label>Trainer</label>
-                                            <input class="form-control" type="text" name="name" placeholder="Full name">
+                                            <input class="form-control" type="text" value="{{old.name_trainer}}" name="trainer"
+                                                placeholder="Trainer">
+                                            <span class="helper-text text-danger">{{errors.err_trainerName}}</span>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <label>Trainee</label>
-                                            <input class="form-control" type="text" name="name" placeholder="Full name">
+                                            <input class="form-control" type="text" value="{{old.name_trainee}}" name="trainee"
+                                                placeholder="Trainee">
+                                            <span class="helper-text text-danger">{{errors.err_traineeName}}</span>
                                         </div>
                                     </div>
                                 </div>
