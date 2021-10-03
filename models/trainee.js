@@ -11,7 +11,7 @@ const traineeSchema = new mongoose.Schema({
         unique: true
     },
     dateOfBirth:{
-        type: String,
+        type: Date,
         required: true
     },
     education:{
@@ -19,5 +19,6 @@ const traineeSchema = new mongoose.Schema({
         required: true
     }
 });
+
 
 module.exports = mongoose.model('Trainees', traineeSchema);

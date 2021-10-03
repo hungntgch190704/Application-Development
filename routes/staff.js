@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const staffController = require('../controller/staff');
 const category = require('../models/coursecategory');
+const middle = require("../middleware/auth")
 
-router.post('/login', (req, res)=>{
+router.get('/login', async(req, res)=>{
     res.redirect("/staff")
 });
 
@@ -11,28 +12,21 @@ router.get('/staff', (req, res)=>{
     res.render('staffIndex');
 })
 //trainee
-
-router.get('/staff/trainee', staffController.viewAllTrainee);
-router.get('/staff/trainee/add', (req, res) => {
-    res.render('staffAddTrainee')
-});
-router.post('/doAddTrainee', staffController.addTrainee);
-
-router.get('/staff/trainee/edit', staffController.editTrainee);
+router.get('/staff/trainee',  staffController.viewAllTrainee);
+router.get('/staff/trainee/add',  staffController.addTrainee);
+router.post('/doAddTrainee',  staffController.doAddTrainee);
+router.get('/staff/trainee/edit',  staffController.editTrainee);
 router.post('/doEditTrainee', staffController.doEditTrainee);
-router.get('/staff/trainee/delete', staffController.deleteTrainee);
+router.get('/staff/trainee/delete',  staffController.deleteTrainee);
+router.post('/searchTrainee', staffController.searchTrainee);
 //Course Category
-router.get('/staff/courseCategory', staffController.viewAllCategory);
-
-router.get('/staff/courseCategory/add', (req, res) => {
-    res.render('staffAddCourseCategory')
-});
-router.post('/doAddCategory', staffController.addCategory);
-
-router.get('/staff/courseCategory/edit', staffController.editCategory);
-router.post('/doEditCategory', staffController.doEditCategory);
-router.get('/staff/courseCategory/delete', staffController.deleteCategory);
-
+router.get('/staff/courseCategory',  staffController.viewAllCategory);
+router.get('/staff/courseCategory/add',  staffController.addCategory);
+router.post('/doAddCategory',  staffController.doAddCategory);
+router.get('/staff/courseCategory/edit',  staffController.editCategory);
+router.post('/doEditCategory',  staffController.doEditCategory);
+router.get('/staff/courseCategory/delete',  staffController.deleteCategory);
+router.post('/searchCategory',  staffController.searchCategory);
 // Course
 // --------------------------------------
 // --------------------------------------

@@ -15,10 +15,11 @@
                         <span class="glyphicon glyphicon-plus"></span>
                         <span><strong>Add new Course Category</strong></span>
                     </a>
-                    <input type="search" style="margin-left: 20%; width: 40%;  flex: none;" class="form-control rounded"
-                        placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                    <hr -3>
-                    <button type="button" class="btn btn-success">Search</button>
+                    <form class="form btn-group align-top" method="post" action="/searchCategory" style="margin-left: 20%; width: 40%;  flex: none;">
+                        <input type="search" name="keyword" class="form-control rounded" 
+                            placeholder="Search Category Course" aria-label="Search" aria-describedby="search-addon" />
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </form>
                 </div>
             </div>
         </center>

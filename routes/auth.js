@@ -6,6 +6,10 @@ const adminController = require('../controller/admin');
 // const Acc = require('../models/user');
 // mongoose.connect('mongodb+srv://group1:password@cluster0.x52v4.mongodb.net/Application?retryWrites=true&w=majority')
 router.post('/login', (req, res)=>{
+    res.redirect("/admin")
+});
+
+router.get('/admin', (req, res)=>{
     res.render('admin')
 })
 

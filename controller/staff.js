@@ -9,24 +9,40 @@ const dbHandler = require('../db/dbHandler');
 //trainee
 exports.viewAllTrainee = async (req, res) => {
     let trainees = await trainee.find();
-    res.render('staffTrainee', { trainees: trainees });
+    res.render('staffTrainee', { trainees: trainees});
 }
 exports.addTrainee = async (req, res) => {
-    let newAccount = new Account({
-        email: req.body.email,
-        password: "12345678",
-        Role: "trainee"
-    });
-    let newTrainee = new trainee({
-        name: req.body.name,
-        email: req.body.email,
-        dateOfBirth: req.body.date,
-        education: req.body.education,
-    });
-    newTrainee = await newTrainee.save();
-    newAccount = await newAccount.save();
-    console.log(newTrainee);
-    res.redirect('/staff/trainee');
+    res.render('staffAddTrainee');
+}
+exports.doAddTrainee = async (req, res) => {
+
+    if(validation.checkAlphabet(req.body.name)){
+        let newAccount = new Account({
+            email: req.body.email,
+            password: "12345678",
+            Role: "trainee"
+        });
+        let newTrainee = new trainee({
+            name: req.body.name,
+            email: req.body.email,
+            dateOfBirth: new Date(req.body.date),
+            education: req.body.education,
+        });
+        try {
+            newTrainee = await newTrainee.save();
+            newAccount = await newAccount.save();
+            console.log(newTrainee);
+            res.redirect('/staff/trainee');
+        }
+        catch (error) {
+            console.log(error);
+            res.redirect('/staff/trainee');
+        }
+    }
+    else{
+        res.render('staffAddTrainee');
+    }
+    
 }
 exports.editTrainee = async (req, res) => {
     let id = req.query.id;
@@ -39,7 +55,7 @@ exports.doEditTrainee = async (req, res) => {
     let aTrainee = await trainee.findById(id);
     aTrainee.name = req.body.name;
     aTrainee.email = req.body.email;
-    aTrainee.dateOfBirth = req.body.date;
+    aTrainee.dateOfBirth = new ISODate(req.body.date);
     aTrainee.education = req.body.education;
     try {
         aTrainee = await aTrainee.save();
@@ -65,6 +81,28 @@ exports.deleteTrainee = async (req, res) => {
     trainee.findByIdAndRemove(id).then(data = {});
     res.redirect('/staff/trainee');
 }
+exports.searchTrainee= async (req, res) => {
+    const searchText = req.body.keyword;
+    //console.log(req.body.keyword);
+    let trainees;
+    let  checkAlphaName = validation.checkAlphabet(searchText);
+    let checkEmpty = validation.checkEmpty(searchText);
+    const searchCondition = new RegExp(searchText,'i');
+
+    //console.log(checkEmpty);
+    if(!checkEmpty){
+        res.redirect('/staff/trainee');
+    }
+    else if(!checkAlphaName){
+        let finddate = new Date(searchText);
+        trainees = await trainee.find({dateOfBirth: finddate});
+        //console.log(finddate);
+    }
+    else{
+        trainees = await trainee.find({name: searchCondition});
+    } 
+    res.render('staffTrainee', { trainees: trainees });
+}
 
 //category
 exports.viewAllCategory = async (req, res) => {
@@ -72,6 +110,9 @@ exports.viewAllCategory = async (req, res) => {
     res.render('staffCourseCategory', { categories: categories });
 }
 exports.addCategory = async (req, res) => {
+    res.render('staffAddCourseCategory');
+}
+exports.doAddCategory = async (req, res) => {
     let newCategory = new category({
         categoryName: req.body.name,
         description: req.body.description,
@@ -109,6 +150,14 @@ exports.deleteCategory = async (req, res) => {
             console.log('Category is deleted');
     });
     res.redirect('/staff/courseCategory');
+}
+exports.searchCategory = async (req, res) => {
+    const searchText = req.body.keyword;
+    //console.log(req.body.keyword);
+    const searchCondition = new RegExp(searchText,'i')
+    let categories = await category.find({categoryName: searchCondition});
+    //console.log(categories);
+    res.render('staffCourseCategory', { categories: categories });
 }
 
 // ========================= COURSE =======================================
