@@ -6,13 +6,16 @@ const courseDetail = require('../models/courseDetail')
 const trainer = require('../models/trainer');
 const validation = require('./validation');
 const dbHandler = require('../db/dbHandler');
+exports.staffindex = async(req,res)=>{
+    res.render('staffIndex',  {loginName : req.session.email});
+}
 //trainee
 exports.viewAllTrainee = async (req, res) => {
     let trainees = await trainee.find();
-    res.render('staffTrainee', { trainees: trainees});
+    res.render('staffTrainee', { trainees: trainees, loginName : req.session.email});
 }
 exports.addTrainee = async (req, res) => {
-    res.render('staffAddTrainee');
+    res.render('staffAddTrainee', {loginName : req.session.email});
 }
 exports.doAddTrainee = async (req, res) => {
 
@@ -40,7 +43,7 @@ exports.doAddTrainee = async (req, res) => {
         }
     }
     else{
-        res.render('staffAddTrainee');
+        res.render('staffAddTrainee',{loginName : req.session.email});
     }
     
 }
@@ -48,7 +51,7 @@ exports.editTrainee = async (req, res) => {
     let id = req.query.id;
     let traineeEdit = await trainee.findById(id);
     console.log(traineeEdit);
-    res.render('staffEditTrainee', { aTrainee: traineeEdit })
+    res.render('staffEditTrainee', { aTrainee: traineeEdit, loginName : req.session.email })
 }
 exports.doEditTrainee = async (req, res) => {
     let id = req.body.id;
@@ -101,16 +104,16 @@ exports.searchTrainee= async (req, res) => {
     else{
         trainees = await trainee.find({name: searchCondition});
     } 
-    res.render('staffTrainee', { trainees: trainees });
+    res.render('staffTrainee', { trainees: trainees , loginName : req.session.email});
 }
 
 //category
 exports.viewAllCategory = async (req, res) => {
     let categories = await category.find();
-    res.render('staffCourseCategory', { categories: categories });
+    res.render('staffCourseCategory', { categories: categories , loginName : req.session.email});
 }
 exports.addCategory = async (req, res) => {
-    res.render('staffAddCourseCategory');
+    res.render('staffAddCourseCategory', {loginName : req.session.email});
 }
 exports.doAddCategory = async (req, res) => {
     let newCategory = new category({
@@ -124,7 +127,7 @@ exports.editCategory = async (req, res) => {
     let id = req.query.id;
     let Categoryedit = await category.findById(id);
     console.log(Categoryedit);
-    res.render('staffEditCourseCategory', { aCategory: Categoryedit })
+    res.render('staffEditCourseCategory', { aCategory: Categoryedit, loginName : req.session.email})
 }
 exports.doEditCategory = async (req, res) => {
     let id = req.body.id;
@@ -157,7 +160,7 @@ exports.searchCategory = async (req, res) => {
     const searchCondition = new RegExp(searchText,'i')
     let categories = await category.find({categoryName: searchCondition});
     //console.log(categories);
-    res.render('staffCourseCategory', { categories: categories });
+    res.render('staffCourseCategory', { categories: categories, loginName : req.session.email});
 }
 
 // ========================= COURSE =======================================

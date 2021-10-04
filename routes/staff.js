@@ -5,35 +5,30 @@ const category = require('../models/coursecategory');
 const middle = require("../middleware/auth")
 const { isStaff } =  require("../middleware/auth")
 
-router.get('/login', async(req, res)=>{
-    res.redirect("/staff")
-});
 
-router.get('/staff', isStaff, (req, res)=>{
-    res.render('staffIndex');
-})
+router.get('/staff', isStaff, staffController.staffindex);
 //trainee
-router.get('/staff/trainee',  staffController.viewAllTrainee);
-router.get('/staff/trainee/add',  staffController.addTrainee);
-router.post('/doAddTrainee',  staffController.doAddTrainee);
-router.get('/staff/trainee/edit',  staffController.editTrainee);
-router.post('/doEditTrainee', staffController.doEditTrainee);
-router.get('/staff/trainee/delete',  staffController.deleteTrainee);
-router.post('/searchTrainee', staffController.searchTrainee);
+router.get('/staff/trainee', isStaff,  staffController.viewAllTrainee);
+router.get('/staff/trainee/add', isStaff,  staffController.addTrainee);
+router.post('/doAddTrainee', isStaff,  staffController.doAddTrainee);
+router.get('/staff/trainee/edit', isStaff,  staffController.editTrainee);
+router.post('/doEditTrainee', isStaff, staffController.doEditTrainee);
+router.get('/staff/trainee/delete', isStaff,  staffController.deleteTrainee);
+router.post('/searchTrainee', isStaff,  staffController.searchTrainee);
 //Course Category
-router.get('/staff/courseCategory',  staffController.viewAllCategory);
-router.get('/staff/courseCategory/add',  staffController.addCategory);
-router.post('/doAddCategory',  staffController.doAddCategory);
-router.get('/staff/courseCategory/edit',  staffController.editCategory);
-router.post('/doEditCategory',  staffController.doEditCategory);
-router.get('/staff/courseCategory/delete',  staffController.deleteCategory);
-router.post('/searchCategory',  staffController.searchCategory);
+router.get('/staff/courseCategory', isStaff,  staffController.viewAllCategory);
+router.get('/staff/courseCategory/add', isStaff,  staffController.addCategory);
+router.post('/doAddCategory', isStaff,  staffController.doAddCategory);
+router.get('/staff/courseCategory/edit', isStaff,  staffController.editCategory);
+router.post('/doEditCategory', isStaff, staffController.doEditCategory);
+router.get('/staff/courseCategory/delete', isStaff,  staffController.deleteCategory);
+router.post('/searchCategory', isStaff,  staffController.searchCategory);
 // Course
 // --------------------------------------
 // --------------------------------------
 
 // Add Course to DB
-router.post('/doAddCourse', staffController.addCourse);
+router.post('/doAddCourse', isStaff,  staffController.addCourse);
 
 // Click add
 router.get('/staff/course/add', async (req, res) => {
@@ -42,44 +37,44 @@ router.get('/staff/course/add', async (req, res) => {
 });
 
 // View full course information
-router.get('/staff/course', staffController.viewAllCourse);
+router.get('/staff/course', isStaff,  staffController.viewAllCourse);
 
 // Edit course by ID
-router.get('/staff/course/edit', staffController.clickEditCourse);
+router.get('/staff/course/edit',isStaff,  staffController.clickEditCourse);
 
 // Update course by ID
-router.post('/doEditCourse', staffController.doEditCourse);
+router.post('/doEditCourse',isStaff, staffController.doEditCourse);
 
 // Search course by name
-router.post('/doSearchCourse', staffController.doSearchCourse);
+router.post('/doSearchCourse',isStaff,  staffController.doSearchCourse);
 
 // Delete Course
-router.get('/staff/course/delete', staffController.doDeleteCourse);
+router.get('/staff/course/delete',isStaff,  staffController.doDeleteCourse);
 
 // Course Detail
 // --------------------------------------
 // --------------------------------------
 
 // Add course detail
-router.post('/doAddCourseDetail', staffController.addCourseDetail);
+router.post('/doAddCourseDetail',isStaff,  staffController.addCourseDetail);
 router.get('/staff/AssignT', async (req, res) => {
     let categories = await category.find();
     res.render('staffAssignT',{_categories: categories})
 });
 
 // View Course detail information
-router.get('/staff/CourseDetail', staffController.viewAllCourseDetail);
+router.get('/staff/CourseDetail',isStaff,  staffController.viewAllCourseDetail);
 
 // Delete course/trainer in course detail
-router.get('/staff/courseDetail/delete', staffController.deleteCourseDetail);
+router.get('/staff/courseDetail/delete',isStaff,  staffController.deleteCourseDetail);
 
 // View course detail
-router.get('/staff/courseDetail/view', staffController.viewInsideCourseDetail);
+router.get('/staff/courseDetail/view',isStaff,  staffController.viewInsideCourseDetail);
 
 // Delete a trainee in course detail
-router.post('/doDeleteTraineeCourse' , staffController.deleteTraineeCourseDetail);
+router.post('/doDeleteTraineeCourse' ,isStaff,  staffController.deleteTraineeCourseDetail);
 
 // Search couse name in course detail
-router.post('/doSearchCourseDetail', staffController.searchCourseDetail);
+router.post('/doSearchCourseDetail',isStaff,  staffController.searchCourseDetail);
 
 module.exports = router;
