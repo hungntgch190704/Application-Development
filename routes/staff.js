@@ -3,12 +3,13 @@ const router = express.Router();
 const staffController = require('../controller/staff');
 const category = require('../models/coursecategory');
 const middle = require("../middleware/auth")
+const { isStaff } =  require("../middleware/auth")
 
 router.get('/login', async(req, res)=>{
     res.redirect("/staff")
 });
 
-router.get('/staff', (req, res)=>{
+router.get('/staff', isStaff, (req, res)=>{
     res.render('staffIndex');
 })
 //trainee

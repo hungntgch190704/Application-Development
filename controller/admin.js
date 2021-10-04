@@ -1,7 +1,12 @@
 const Account = require('../models/user');
 const staff = require('../models/staff');
 const trainer = require('../models/trainer');
-const dbo = require('../db/db');
+const validation = require('./validation');
+const dbHandler = require('../db/dbHandler');
+
+exports.getAdmin = async (req, res) =>{
+    res.render('admin', {loginName : req.session.email})
+}
 
 // add new staff
 exports.addStaff = async (req, res) =>{
@@ -41,30 +46,30 @@ exports.addTrainer = async (req, res) =>{
 }
 
 exports.getAddTrainer = async (req, res) => {
-    res.render('adminAddTrainer');
+    res.render('adminAddTrainer', {loginName : req.session.email});
 }
 
 exports.getAddStaff = async (req, res) => {
-    res.render('adminAddStaff');
+    res.render('adminAddStaff', {loginName : req.session.email});
 }
 
 //view all trainer
 exports.viewTrainer = async (req, res) =>{
     let listTrainer = await trainer.find();
-    res.render('adminViewTrainer', {listTrainer: listTrainer})
+    res.render('adminViewTrainer', {listTrainer: listTrainer, loginName : req.session.email} )
 }
 
 //view all staff
 exports.viewStaff = async (req, res) =>{
     let listStaff = await staff.find();
-    res.render('adminViewStaff', {listStaff: listStaff})
+    res.render('adminViewStaff', {listStaff: listStaff, loginName : req.session.email})
 }
 
 exports.editStaff = async (req, res) =>{
     let id = req.query.id;
     let aStaff = await staff.findById(id);
     // console.log(aStaff);
-    res.render('adminEditStaff',{aStaff: aStaff})
+    res.render('adminEditStaff',{aStaff: aStaff, loginName : req.session.email})
 }
 
 exports.updateStaff = async (req, res) =>{
@@ -87,7 +92,7 @@ exports.updateStaff = async (req, res) =>{
 exports.editTrainer = async (req, res) =>{
     let id = req.query.id;
     let aTrainer = await trainer.findById(id);
-    res.render('adminEditTrainer',{aTrainer: aTrainer})
+    res.render('adminEditTrainer',{aTrainer: aTrainer, loginName : req.session.email})
 }
 
 exports.updateTrainer = async (req, res) =>{
@@ -136,4 +141,56 @@ exports.deleteTrainer = async (req, res) => {
     })
     trainer.findByIdAndRemove(id).then(data={});
     res.redirect('/admin/adminViewTrainer');
+}
+
+exports.searchStaff= async (req, res) => {
+    const searchText = req.body.keyword;
+    //console.log(req.body.keyword);
+    let listStaff;
+    let checkAlphaName = validation.checkAlphabet(searchText);
+    let checkEmpty = validation.checkEmpty(searchText);
+    const searchCondition = new RegExp(searchText,'i');
+
+    //console.log(checkEmpty);
+    if(!checkEmpty){
+        res.redirect('/admin/adminViewStaff');
+    }
+    else if(checkAlphaName){
+        listStaff = await staff.find({name: searchCondition});
+    }
+    res.render('adminViewStaff', { listStaff: listStaff , loginName : req.session.email});
+}
+
+exports.searchTrainer= async (req, res) => {
+    const searchText = req.body.keyword;
+    //console.log(req.body.keyword);
+    let listTrainer;
+    let checkAlphaName = validation.checkAlphabet(searchText);
+    let checkEmpty = validation.checkEmpty(searchText);
+    const searchCondition = new RegExp(searchText,'i');
+
+    //console.log(checkEmpty);
+    if(!checkEmpty){
+        res.redirect('/admin/adminViewTrainer');
+    }
+    else if(checkAlphaName){
+        listTrainer = await trainer.find({name: searchCondition});
+    }
+    res.render('adminViewTrainer', { listTrainer: listTrainer, loginName : req.session.email });
+}
+
+exports.setDefaultPass = async (req, res)=> {
+    let id = req.query.id; 
+    console.log(id);
+    let aStaff = await staff.findById(id);
+    let account = await Account.findOne({ 'email': aStaff.email }).exec()
+    account.password = "12345678";
+    try{
+        account = await account.save();
+        res.redirect('/admin/adminViewStaff');
+    }
+    catch(error){
+        console.log(error);
+        res.redirect('/admin/adminViewStaff');
+    }
 }
