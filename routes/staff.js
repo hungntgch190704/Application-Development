@@ -1,120 +1,80 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const staffController = require('../controller/staff');
-//localhost/admin
-const Course = require('../models/course');
+const category = require('../models/coursecategory');
+const middle = require("../middleware/auth")
+const { isStaff } =  require("../middleware/auth")
 
-router.post('/login', (req, res)=>{
-    res.redirect("/staff")
-});
 
-router.get('/staff', (req, res)=>{
-    res.render('staffIndex');
-})
+router.get('/staff', isStaff, staffController.staffindex);
 //trainee
-
-router.get('/staff/trainee', staffController.viewAllTrainee);
-router.get('/staff/trainee/add', (req, res) => {
-    res.render('staffAddTrainee')
-});
-router.post('/doAddTrainee', staffController.addTrainee);
-
-router.get('/staff/trainee/edit', staffController.editTrainee);
-router.post('/doEditTrainee', staffController.doEditTrainee);
-router.get('/staff/trainee/delete', staffController.deleteTrainee);
+router.get('/staff/trainee', isStaff,  staffController.viewAllTrainee);
+router.get('/staff/trainee/add', isStaff,  staffController.addTrainee);
+router.post('/doAddTrainee', isStaff,  staffController.doAddTrainee);
+router.get('/staff/trainee/edit', isStaff,  staffController.editTrainee);
+router.post('/doEditTrainee', isStaff, staffController.doEditTrainee);
+router.get('/staff/trainee/delete', isStaff,  staffController.deleteTrainee);
+router.post('/searchTrainee', isStaff,  staffController.searchTrainee);
 //Course Category
-router.get('/staff/courseCategory', staffController.viewAllCategory);
-
-router.get('/staff/courseCategory/add', (req, res) => {
-    res.render('staffAddCourseCategory')
-});
-router.post('/doAddCategory', staffController.addCategory);
-
-router.get('/staff/courseCategory/edit', staffController.editCategory);
-router.post('/doEditCategory', staffController.doEditCategory);
-router.get('/staff/courseCategory/delete', staffController.deleteCategory);
-
-
+router.get('/staff/courseCategory', isStaff,  staffController.viewAllCategory);
+router.get('/staff/courseCategory/add', isStaff,  staffController.addCategory);
+router.post('/doAddCategory', isStaff,  staffController.doAddCategory);
+router.get('/staff/courseCategory/edit', isStaff,  staffController.editCategory);
+router.post('/doEditCategory', isStaff, staffController.doEditCategory);
+router.get('/staff/courseCategory/delete', isStaff,  staffController.deleteCategory);
+router.post('/searchCategory', isStaff,  staffController.searchCategory);
 // Course
 // --------------------------------------
 // --------------------------------------
 
 // Add Course to DB
-router.post('/doAddCourse', staffController.addCourse);
-router.get('/staff/course/add', (req, res) => {
-    res.render('staffAddCourse')
+router.post('/doAddCourse', isStaff,  staffController.addCourse);
+
+// Click add
+router.get('/staff/course/add', async (req, res) => {
+    let categories = await category.find();
+    res.render('staffAddCourse',{_categories: categories});
 });
 
-// Render full course information
-router.get('/staff/course', async (req, res) => {
-    let course = await Course.find().sort({timeCreated:'desc'});
-    res.render('staffCourse',{_course: course})
-});
+// View full course information
+router.get('/staff/course', isStaff,  staffController.viewAllCourse);
 
 // Edit course by ID
-router.get('/staff/course/edit', async (req, res) => {
-    let id = req.query.id;
-    let course = await Course.findById(id);
-    //console.log(course);
-    res.render('staffEditCourse',{_course: course})
-});
+router.get('/staff/course/edit',isStaff,  staffController.clickEditCourse);
 
 // Update course by ID
-router.post('/doEditCourse', async (req, res) => {
-    let id = req.body.id;
-
-    course = await Course.findById(id);
-
-    course.name = req.body.name;
-    course.category = req.body.category;
-    course.description = req.body.description;
-    try{
-        course = await course.save();
-        res.redirect('/staff/course');
-    }
-    catch(error){
-        console.log(error);
-        res.redirect('/staff/course');
-    }
-
-});
-
+router.post('/doEditCourse',isStaff, staffController.doEditCourse);
 
 // Search course by name
-router.post('/doSearchCourse',async (req, res)=>{
-    console.log(1);
-    const searchText = req.body.keyword;
-    console.log(searchText);
-    let course = await Course.find({name: searchText}).sort({timeCreated:'desc'});
-    console.log(course);
-    res.render('staffCourse',{_course: course})
-})
+router.post('/doSearchCourse',isStaff,  staffController.doSearchCourse);
 
 // Delete Course
-router.get('/staff/course/delete', async (req, res) => {
-    let id = req.query.id;
-    Course.findByIdAndRemove(id).then(data={
-    });
-    res.redirect('/staff/course');
+router.get('/staff/course/delete',isStaff,  staffController.doDeleteCourse);
+
+// Course Detail
+// --------------------------------------
+// --------------------------------------
+
+// Add course detail
+router.post('/doAddCourseDetail',isStaff,  staffController.addCourseDetail);
+router.get('/staff/AssignT', async (req, res) => {
+    let categories = await category.find();
+    res.render('staffAssignT',{_categories: categories})
 });
 
+// View Course detail information
+router.get('/staff/CourseDetail',isStaff,  staffController.viewAllCourseDetail);
 
+// Delete course/trainer in course detail
+router.get('/staff/courseDetail/delete',isStaff,  staffController.deleteCourseDetail);
 
-// Course Details
-router.get('/staff/CourseDetail', (req, res) => {
-    res.render('staffCourseDetail')
-});
+// View course detail
+router.get('/staff/courseDetail/view',isStaff,  staffController.viewInsideCourseDetail);
 
-router.get('/staff/AssignT', (req, res) => {
-    res.render('staffAssignT')
-});
+// Delete a trainee in course detail
+router.post('/doDeleteTraineeCourse' ,isStaff,  staffController.deleteTraineeCourseDetail);
 
-router.get('/staff/courseDetail/view', (req, res) => {
-    res.render('staffViewCourseDetail')
-});
-
-
-
+// Search couse name in course detail
+router.post('/doSearchCourseDetail',isStaff,  staffController.searchCourseDetail);
 
 module.exports = router;

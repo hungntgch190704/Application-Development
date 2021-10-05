@@ -1,26 +1,45 @@
 const Account = require('../models/user');
-const bcrypt = require ('bcrypt');
 
-exports.handleLogin = (req, res) => {
+exports.handleLogin = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    
-    Account.findOne({ username: username})
-    .then(user =>{
-        console.log(user)
-        bcrypt.compare(password, user.password)
-        .then((doMatch) => { 
-            if(doMatch){
-                sess = req.session;
-                sess.username = user.username
-                sess.isLogin = true;
-                return res.redirect('/products/home')
+    try{
+        let acc= await Account.findOne({email: username});
+        if(acc.password ==password){
+            if(acc.Role == 'staff'){
+                req.session.user = acc;
+                req.session.email = username;
+                req.session.staff = true;
+                res.redirect('/staff');
             }
-            return res.render('index', {errors: 'Username or password is incorrect'})
-        })
-    })
-    .catch(err =>{
-        res.render('index', {errors: 'Username or password is incorrect'});
-    })
-}
+            else if(acc.Role == 'admin'){
+                req.session.user = acc;
+                req.session.email = username;
+                req.session.admin = true;
+                res.redirect('/admin');
+            }
+            else if(acc.Role == 'trainer'){
+                req.session.user = acc;
+                req.session.email = username;
+                req.session.trainer = true;
+                res.redirect('/trainer');
+            }
+            else{
+                req.session.user = acc;
+                req.session.email = username;
+                req.session.trainee = true;
+                res.redirect('/trainee');
+            }
+        }else{
+            res.render('index');
+        }
+    }catch (error) {
+        console.log(error);
+        res.render('index');
+    }
+};
 
+exports.handleLogout = async (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+}
