@@ -1,33 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const trainerController = require('../controller/trainer');
+const { isTrainer } =  require("../middleware/auth")
 
-router.get('/trainer', (req, res) => {
-    res.render('trainerIndex')
-});
+router.get('/trainer', isTrainer, trainerController.getTrainer);
 
-router.get('/trainer/trainerEdit', (req, res) => {
-    res.render('trainerProfileUpdate')
-});
+router.get('/trainer/trainerEdit', isTrainer, trainerController.editTrainer);
 
-router.get('/trainer/viewTrainee', (req, res) => {
-    res.render('trainerViewTrainee')
-});
+router.post('/trainer/trainerProfileUpdate/doEditTrainer', isTrainer, trainerController.updateTrainer);
 
-// router.get('/trainer/viewCourse', (req, res) => {
-//     res.render('trainerViewCourse')
-// });
+router.get('/trainer/AssignedCourses', isTrainer, trainerController.viewAllCategory);
 
-router.get('/trainer/viewCourse', trainerController.viewAllCategory);
+router.post('trainer/searchCourse', isTrainer, trainerController.searchCourse);
 
-router.post('trainer/searchCourse',async (req, res)=>{
-    console.log(1);
-    const searchText = req.body.keyword;
-    console.log(searchText);
-    let course = await Course.find({name: searchText}).sort({timeCreated:'desc'});
-    console.log(course);
-    res.render('trainerViewCourse',{_course: course})
-})
-
+router.get('/trainer/viewTrainee', isTrainer, trainerController.viewTrainee);
 
 module.exports = router;
