@@ -3,7 +3,7 @@ const router = express.Router();
 const trainerController = require('../controller/trainer');
 const { isTrainer } =  require("../middleware/auth")
 
-router.get('/trainer', isTrainer, trainerController.getTrainer, trainerController.getProfile);
+router.get('/trainer', isTrainer, trainerController.getTrainer);
 
 router.get('/trainer/trainerEdit', isTrainer, trainerController.editTrainer);
 
