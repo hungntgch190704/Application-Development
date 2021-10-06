@@ -3,11 +3,11 @@ const router = express.Router();
 const trainerController = require('../controller/trainer');
 const { isTrainer } =  require("../middleware/auth")
 
-router.get('/trainer', isTrainer, trainerController.getTrainer);
+router.get('/trainer', isTrainer, trainerController.getTrainer, trainerController.getProfile);
 
 router.get('/trainer/trainerEdit', isTrainer, trainerController.editTrainer);
 
-router.post('/trainer/trainerProfileUpdate/doEditTrainer', isTrainer, trainerController.updateTrainer);
+router.post('/trainer/trainerEdit/doEditTrainer', isTrainer, trainerController.updateTrainer);
 
 router.get('/trainer/AssignedCourses', isTrainer, trainerController.viewAllCategory);
 

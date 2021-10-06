@@ -2,10 +2,15 @@ const trainer = require('../models/trainer');
 const course = require('../models/course');
 const category = require('../models/coursecategory');
 const express = require('express');
+const { db } = require('../models/trainer');
 exports.getTrainer = async(req,res)=>{
     res.render('trainerIndex',  {loginName : req.session.email});
 }
-
+//view profile
+exports.getProfile = async(req,res)=>{
+    let aTrainer = await db.trainers.findOne({"_id" : ObjectID(id)})
+    res.render('trainerIndex',{_aTrainer: aTrainer, loginName : req.session.email});
+}
 //search course
 exports.searchCourse = async(req,res)=>{
     console.log(1);
@@ -45,10 +50,10 @@ exports.updateTrainer = async (req, res) =>{
     aTrainer.address = req.body.address;
     try{
         aTrainer = await aTrainer.save();
-        res.redirect('/trainer/trainerIndex');;
+        res.redirect('/trainer');;
     }
     catch(error){
         console.log(error);
-        res.redirect('/trainer/trainerProfileUpdate');
+        res.redirect('/trainer//trainerEdit');
     }
 }

@@ -23,15 +23,14 @@
                 </tr>
               </thead>
               <tbody>
-                {{#each listTrainer}}
+                <input  type="hidden" name="id" value="{{_aTrainer._id}}">
                 <tr>
-                  <td class="text-nowrap align-middle">{{name}}</td>
-                  <td class="text-nowrap align-middle">{{email}}</td>
-                  <td class="text-nowrap align-middle"><span>{{speciality}}</span></td>
-                  <td class="text-nowrap align-middle">{{age}}</td>
-                  <td class="text-nowrap align-middle">{{address}}</td>
+                  <td class="text-nowrap align-middle">{{_aTrainer.name}}</td>
+                  <td class="text-nowrap align-middle">{{_aTrainer.email}}</td>
+                  <td class="text-nowrap align-middle"><span>{{_aTrainer.speciality}}</span></td>
+                  <td class="text-nowrap align-middle">{{_aTrainer.age}}</td>
+                  <td class="text-nowrap align-middle">{{_aTrainer.address}}</td>
                 </tr>
-                {{/each}}
               </tbody>
 </body>
 
