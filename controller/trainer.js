@@ -1,6 +1,8 @@
 const trainer = require('../models/trainer');
+const trainee = require('../models/trainee');
 const course = require('../models/course');
 const category = require('../models/coursecategory');
+const validation = require('./validation');
 const express = require('express');
 
 exports.getTrainer = async(req,res)=>{
@@ -22,9 +24,22 @@ exports.searchCourse = async(req,res)=>{
     res.render('trainerViewCourse',{_course: course, loginName : req.session.email})
 }
 
-exports.viewAllCategory = async(req,res)=>{
-    let categories = await category.find();
-    res.render('trainerViewCourse', {categories: categories, loginName : req.session.email});
+exports.searchCourse = async (req, res) => {
+    const searchText = req.body.keyword;
+    //console.log(req.body.keyword);
+    let listCourse;
+    let checkAlphaName = validation.checkAlphabet(searchText);
+    let checkEmpty = validation.checkEmpty(searchText);
+    const searchCondition = new RegExp(searchText,'i');
+
+    //console.log(checkEmpty);
+    if(!checkEmpty){
+        res.redirect('/trainer/AssignedCourses');
+    }
+    else if(checkAlphaName){
+        listCourse = await course.find({name: searchCondition});
+    }
+    res.render('trainerViewCourse', { listCourse: listCourse, loginName : req.session.email });
 }
 
 exports.viewCourse = async(req,res)=>{
@@ -35,6 +50,7 @@ exports.viewTrainee = async (req, res) => {
     let trainees = await trainee.find();
     res.render('trainerViewTrainee', {trainees: trainees, loginName : req.session.email});
 }   
+
 exports.editTrainer = async (req, res) =>{
     let id = req.query.id;
     let aTrainer = await trainer.findById(id);
