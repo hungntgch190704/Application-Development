@@ -14,7 +14,7 @@
                             <div class="col" style="margin-left: 2%">
                             </div>
                             <div class="col">
-                                <form class="form" method="post" action="/  trainer/searchCourse" style="display: flex; margin-right: 9%;">
+                                <form class="form" method="post" action="/trainer/trainerSearchCourse" style="display: flex; margin-right: 9%;">
                                     <input type="search" name="keyword" class="form-control rounded" placeholder="Search Course" aria-label="Search"
                                         aria-describedby="search-addon" />
                                     <hr -3>
@@ -41,7 +41,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each _course}}
+                                {{#each course}}
                                 <tr>
                                     <td class="text-nowrap align-middle">{{name}}</td>
                                     <td class="text-nowrap align-middle"><span>{{categories}}</span></td>
