@@ -18,7 +18,6 @@ exports.addTrainee = async (req, res) => {
     res.render('staffAddTrainee', {loginName : req.session.email});
 }
 exports.doAddTrainee = async (req, res) => {
-
     if(validation.checkAlphabet(req.body.name)){
         let newAccount = new Account({
             email: req.body.email,
@@ -73,8 +72,12 @@ exports.doEditTrainee = async (req, res) => {
 exports.deleteTrainee = async (req, res) => {
     let id = req.query.id;
     let aTrainee = await trainee.findById(id);
+    let name = aTrainee.name;
+    await courseDetail.updateMany(
+        {$pull: {trainees: name}}
+    )
     let email = aTrainee.email;
-    console.log(email);
+    console.log(name);
     Account.deleteOne({ 'email': email }, (err) => {
         if (err)
             throw err;
@@ -270,7 +273,7 @@ exports.addCourseDetail = async (req, res) => {
     let name_trainer = req.body.trainer;
     let name_trainee = req.body.trainee;
     let check = true;
-    let check_courseName = await dbHandler.checkExisted(course, course_name) !== null;
+    let check_courseName = await dbHandler.checkExisted(Course, course_name) !== null;
     let check_trainerName = await dbHandler.checkExisted(trainer, name_trainer) !== null;
     let check_traineeName = await dbHandler.checkExisted(trainee, name_trainee) !== null;
     check &= check_courseName & check_trainerName & check_traineeName;
