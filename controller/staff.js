@@ -185,10 +185,12 @@ exports.addCourse = async (req, res) => {
         err_courseName = "", err_description = "";
         if (!checkAlphaName) err_courseName = "You must enter characters in alphabet";
         if (!checkAlphaDes) err_description = "You must enter characters in alphabet";
-        res.render('staffAddCourse',{
-                   errors: {err_courseName,err_description},
-                   old: {name,description},
-                   _categories: categories
+        res.render('staffAddCourse',
+        {
+            errors: {err_courseName,err_description},
+            old: {name,description},
+            _categories: categories, 
+            loginName : req.session.email
         });
     }
     else {
@@ -213,7 +215,7 @@ exports.addCourse = async (req, res) => {
 // View all course
 exports.viewAllCourse = async (req, res) => {
     let course = await Course.find();
-    res.render('staffCourse',{_course: course})
+    res.render('staffCourse',{_course: course,loginName : req.session.email})
 }
 
 // Click Edit Course
@@ -222,7 +224,7 @@ exports.clickEditCourse = async (req, res) => {
     let course = await Course.findById(id);
     let categories = await category.find();
     //console.log(course);
-    res.render('staffEditCourse',{_course: course, _categories: categories})
+    res.render('staffEditCourse',{_course: course, _categories: categories,loginName : req.session.email})
 }
 
 // Do Edit Course 
@@ -251,14 +253,15 @@ exports.doSearchCourse = async (req, res) => {
     const searchCondition = new RegExp(searchText,'i')
     let course = await Course.find({name: searchCondition});
     console.log(course);
-    res.render('staffCourse',{_course: course})
+    res.render('staffCourse',{_course: course,loginName : req.session.email})
 }
 
 // Delete Course
 exports.doDeleteCourse = async (req, res) => {
     let id = req.query.id;
-    Course.findByIdAndRemove(id).then(data={
-    });
+    let course_name = await Course.findById(id);
+    await Course.findByIdAndRemove(id).then(data={});
+    await courseDetail.remove({name: course_name.name});
     res.redirect('/staff/course');
 }
 
@@ -273,13 +276,13 @@ exports.addCourseDetail = async (req, res) => {
     let name_trainer = req.body.trainer;
     let name_trainee = req.body.trainee;
     let check = true;
+    let categories = await category.find();
     let check_courseName = await dbHandler.checkExisted(Course, course_name) !== null;
     let check_trainerName = await dbHandler.checkExisted(trainer, name_trainer) !== null;
     let check_traineeName = await dbHandler.checkExisted(trainee, name_trainee) !== null;
     check &= check_courseName & check_trainerName & check_traineeName;
     console.log(check);
     if (!check) {
-        let categories = await category.find();
         err_courseName = "", err_trainerName = "", err_traineeName = "";
         if (!check_courseName) err_courseName = "Course name is not exist!";
         if (!check_trainerName) err_trainerName = "Trainer name is not exist!";
@@ -287,16 +290,32 @@ exports.addCourseDetail = async (req, res) => {
         res.render('staffAssignT', {
             _categories: categories,
             old: { course_name, name_trainer, name_trainee },
-            errors: { err_courseName, err_trainerName, err_traineeName }
+            errors: { err_courseName, err_trainerName, err_traineeName, 
+            loginName : req.session.email}
         })
     }
     else {
         await courseDetail.findOne({ $and: [{ 'name': course_name }, { 'category': name_category }, { 'trainer': name_trainer }] }).then(data => {
             if (data) {
                 try {
-                    data.trainees.push(name_trainee);
-                    data.save();
-                    console.log(1);
+                    for(let item of data.trainees){
+                        if(item === name_trainee){
+                            check = false;
+                            break;
+                        }
+                    }
+                    if(check) {
+                        data.trainees.push(name_trainee);
+                        data.save();
+                        console.log(1);
+                        res.redirect('/staff/courseDetail');
+                    }
+                    else{
+                        res.render('staffAssignT',{err: "Trainee existed in this course!",
+                                                   _categories: categories,
+                                                   old: { course_name, name_trainer, name_trainee },
+                                                   loginName : req.session.email})
+                    }
                 }
                 catch (error) {
                     console.log(error);
@@ -316,17 +335,17 @@ exports.addCourseDetail = async (req, res) => {
                 catch (error) {
                     console.log(error);
                 }
-
+                res.redirect('/staff/courseDetail');
             }
         });
-        res.redirect('/staff/courseDetail');
+        
     }
 }
 
 // View All Course Details
 exports.viewAllCourseDetail = async (req, res) => {
     let course_detail = await courseDetail.find();
-    res.render('staffCourseDetail',{_course_detail: course_detail})
+    res.render('staffCourseDetail',{_course_detail: course_detail,loginName : req.session.email})
 }
 
 // Delete Course Details
@@ -352,7 +371,8 @@ exports.viewInsideCourseDetail = async (req, res) => {
         }
     }
     res.render('staffViewCourseDetail',{_course_detail: course_detail,
-                                        _trainees_detail: trainees_detail});
+                                        _trainees_detail: trainees_detail,
+                                        loginName : req.session.email});
 }
 
 // Delete a trainee in course details
@@ -385,5 +405,5 @@ exports.searchCourseDetail = async (req, res) =>{
     const searchCondition = new RegExp(searchText,'i')
     let course_detail = await courseDetail.find({name: searchCondition});
     console.log(course_detail);
-    res.render('staffCourseDetail',{_course_detail: course_detail, _keyword: searchText});
+    res.render('staffCourseDetail',{_course_detail: course_detail, _keyword: searchText,loginName : req.session.email});
 }
