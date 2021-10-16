@@ -2,7 +2,7 @@ const Account = require('../models/user');
 const staff = require('../models/staff');
 const trainer = require('../models/trainer');
 const validation = require('./validation');
-const dbHandler = require('../db/dbHandler');
+const courseDetail = require('../models/courseDetail')
 
 exports.getAdmin = async (req, res) =>{
     res.render('admin', {loginName : req.session.email})
@@ -125,6 +125,7 @@ exports.deleteStaff = async (req, res) => {
             console.log('Account is deleted');
     })
     staff.findByIdAndRemove(id).then(data={});
+    
     res.redirect('/admin/adminViewStaff');
 }
 
@@ -140,6 +141,8 @@ exports.deleteTrainer = async (req, res) => {
             console.log('Account is deleted');
     })
     trainer.findByIdAndRemove(id).then(data={});
+    console.log(aTrainer.name);
+    await courseDetail.deleteMany({trainer: aTrainer.name});
     res.redirect('/admin/adminViewTrainer');
 }
 

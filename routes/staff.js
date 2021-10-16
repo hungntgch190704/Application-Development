@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const staffController = require('../controller/staff');
 const category = require('../models/coursecategory');
-const middle = require("../middleware/auth")
-const { isStaff } =  require("../middleware/auth")
+const { isStaff } =  require("../middleware/auth");
 
 
 router.get('/staff', isStaff, staffController.staffindex);
@@ -31,9 +30,9 @@ router.post('/searchCategory', isStaff,  staffController.searchCategory);
 router.post('/doAddCourse', isStaff,  staffController.addCourse);
 
 // Click add
-router.get('/staff/course/add', async (req, res) => {
+router.get('/staff/course/add',isStaff, async (req, res) => {
     let categories = await category.find();
-    res.render('staffAddCourse',{_categories: categories});
+    res.render('staffAddCourse',{_categories: categories,loginName : req.session.email});
 });
 
 // View full course information
@@ -57,9 +56,9 @@ router.get('/staff/course/delete',isStaff,  staffController.doDeleteCourse);
 
 // Add course detail
 router.post('/doAddCourseDetail',isStaff,  staffController.addCourseDetail);
-router.get('/staff/AssignT', async (req, res) => {
+router.get('/staff/AssignT',isStaff, async (req, res) => {
     let categories = await category.find();
-    res.render('staffAssignT',{_categories: categories})
+    res.render('staffAssignT',{_categories: categories,loginName : req.session.email})
 });
 
 // View Course detail information
