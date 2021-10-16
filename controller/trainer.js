@@ -2,6 +2,7 @@ const trainer = require('../models/trainer');
 const trainee = require('../models/trainee');
 const course = require('../models/course');
 const category = require('../models/coursecategory');
+const coursedDetail = require('../models/courseDetail')
 const validation = require('./validation');
 const express = require('express');
 
@@ -15,18 +16,8 @@ exports.getTrainer = async(req,res)=>{
 //     res.render('trainerIndex',{_aTrainer: aTrainer, loginName : req.session.email});
 // }
 //search course
-exports.searchCourse = async(req,res)=>{
-    console.log(1);
-    const searchText = req.body.keyword;
-    console.log(searchText);
-    let course = await course.find({name: searchText}).sort({timeCreated:'desc'});
-    console.log(course);
-    res.render('trainerViewCourse',{_course: course, loginName : req.session.email})
-}
-
 exports.searchCourse = async (req, res) => {
     const searchText = req.body.keyword;
-    //console.log(req.body.keyword);
     let listCourse;
     let checkAlphaName = validation.checkAlphabet(searchText);
     let checkEmpty = validation.checkEmpty(searchText);
@@ -42,6 +33,11 @@ exports.searchCourse = async (req, res) => {
     res.render('trainerViewCourse', { listCourse: listCourse, loginName : req.session.email });
 }
 
+//view course details
+exports.viewAllCourseDetail = async (req, res) => {
+    let courseDetail = await courseDetail.find();
+    res.render('trainerViewCourse',{_courseDetail: courseDetail})
+}
 exports.viewCourse = async(req,res)=>{
     let course = await course.find();
     res.render('trainerViewCourse', {_course: course, loginName : req.session.email})
