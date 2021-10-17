@@ -9,10 +9,14 @@ router.get('/trainer/trainerEdit', isTrainer, trainerController.editTrainer);
 
 router.post('/trainer/trainerEdit/doEditTrainer', isTrainer, trainerController.updateTrainer);
 
-router.get('/trainer/AssignedCourses', isTrainer, trainerController.viewCourse);
+router.get('/trainer/ViewCourses', isTrainer, trainerController.viewCourse);
 
-router.post('trainer/trainerSearchCourse', isTrainer, trainerController.searchCourse);
+router.post('trainer/SearchCourse', isTrainer, trainerController.searchCourse);
 
 router.get('/trainer/viewTrainee', isTrainer, trainerController.viewTrainee);
+
+router.get('/trainer/trainerCategory', isTrainer, trainerController.viewAllCategory);
+
+router.post('/trainer/searchCategory', isTrainer,  trainerController.searchCategory);
 
 module.exports = router;
