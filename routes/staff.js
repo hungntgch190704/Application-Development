@@ -34,7 +34,7 @@ router.get('/staff/trainee', isStaff,  staffController.viewAllTrainee);
 router.get('/staff/trainee/add', isStaff,  staffController.addTrainee);
 router.post('/doAddTrainee', upload.single('picture'), isStaff, staffController.doAddTrainee);
 router.get('/staff/trainee/edit', isStaff,  staffController.editTrainee);
-router.post('/doEditTrainee', isStaff, staffController.doEditTrainee);
+router.post('/doEditTrainee', upload.single('picture'), isStaff, staffController.doEditTrainee);
 router.get('/staff/trainee/delete', isStaff,  staffController.deleteTrainee);
 router.post('/searchTrainee', isStaff,  staffController.searchTrainee);
 //Course Category
