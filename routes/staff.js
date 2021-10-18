@@ -6,6 +6,10 @@ const { isStaff } =  require("../middleware/auth");
 
 
 router.get('/staff', isStaff, staffController.staffindex);
+router.get('/staff/updateProfile', isStaff, staffController.updateProfile);
+router.post('/staff/doUpdateProfile', isStaff, staffController.doUpdateProfile);
+router.get('/staff/changePassword', isStaff, staffController.changePassword);
+router.post('/staff/doChangePassword', isStaff, staffController.doChangePassword);
 //trainee
 router.get('/staff/trainee', isStaff,  staffController.viewAllTrainee);
 router.get('/staff/trainee/add', isStaff,  staffController.addTrainee);
