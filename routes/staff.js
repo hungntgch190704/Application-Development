@@ -23,10 +23,27 @@ const upload = multer({
         fieldSize:1024*1024*3
     },
 })
+const storage2 = multer.diskStorage({
+    destination:function(req, file, callback){
+        callback(null, 'public/uploads/staff');
+    },
+    //add back the extension
+    filename:function(req, file, callback){
+        callback(null, Date.now()+file.originalname);
+    },
+})
+
+//upload parameters for multer
+const upload2 = multer({
+    storage:storage2,
+    limits:{
+        fieldSize:1024*1024*3
+    },
+})
 
 router.get('/staff', isStaff, staffController.staffindex);
 router.get('/staff/updateProfile', isStaff, staffController.updateProfile);
-router.post('/staff/doUpdateProfile', isStaff, staffController.doUpdateProfile);
+router.post('/staff/doUpdateProfile', upload2.single('picture'), isStaff, staffController.doUpdateProfile);
 router.get('/staff/changePassword', isStaff, staffController.changePassword);
 router.post('/staff/doChangePassword', isStaff, staffController.doChangePassword);
 //trainee

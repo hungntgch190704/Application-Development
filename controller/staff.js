@@ -19,6 +19,9 @@ exports.updateProfile = async (req, res) => {
 exports.doUpdateProfile = async (req, res) => {
     let id = req.body.id;
     let aStaff = await staff.findById(id);
+    if(req.file){
+        aStaff.img = req.file.filename;
+    }
     aStaff.name = req.body.name;
     aStaff.age = req.body.age;
     aStaff.address = req.body.address;
@@ -74,8 +77,6 @@ exports.addTrainee = async (req, res) => {
     res.render('staffAddTrainee', { loginName: req.session.email });
 }
 exports.doAddTrainee = async (req, res) => {
-    if (validation.checkAlphabet(req.body.name)) {
-        console.log(req.file.filename);
         let newAccount = new Account({
             email: req.body.email,
             password: "12345678",
@@ -98,11 +99,7 @@ exports.doAddTrainee = async (req, res) => {
             console.log(error);
             res.redirect('/staff/trainee');
         }
-    }
-    else {
-        res.render('staffAddTrainee', { loginName: req.session.email });
-        
-    }
+
 
 }
 exports.editTrainee = async (req, res) => {
