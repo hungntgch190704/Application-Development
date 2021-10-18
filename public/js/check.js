@@ -24,6 +24,9 @@ $(function () {
           required: true,
           dateISO: true
         },
+        picture: {
+          regex: /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i
+        },
         education: "required"
       },
       messages: {
