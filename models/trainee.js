@@ -17,6 +17,10 @@ const traineeSchema = new mongoose.Schema({
     education:{
         type: String,
         required: true
+    },
+    img: {
+        type: String,
+        required: false
     }
 });
 

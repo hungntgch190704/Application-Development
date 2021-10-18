@@ -10,20 +10,35 @@ exports.getAdmin = async (req, res) =>{
 
 // add new staff
 exports.addStaff = async (req, res) =>{
-    let newStaff = new staff({
-        name: req.body.name,
-        email:req.body.email,
-        age: req.body.age,
-        address:req.body.address,
-    })
-    let newAccount = new Account({
-        email: req.body.email,
-        password: "12345678",
-        Role: "staff"
-    })
-    newStaff = await newStaff.save();
-    newAccount = await newAccount.save();
-    res.redirect('/admin/adminViewStaff');
+
+    let validateEmail = validation.validateEmail(req.body.email);
+    let checkName = validation.checkAlphabet(req.body.name);
+    let errors = [];
+    if(!validateEmail){
+        errors["email"] = 'Email is not valid';
+    }
+    if(!checkName){
+        errors["name"] = 'Name is not valid';
+    }
+    if(!validateEmail || !checkName){
+        res.render('adminAddStaff', {errors: errors})
+    }
+    else{
+        let newStaff = new staff({
+            name: req.body.name,
+            email:req.body.email,
+            age: req.body.age,
+            address:req.body.address,
+        })
+        let newAccount = new Account({
+            email: req.body.email,
+            password: "12345678",
+            Role: "staff"
+        })
+        newStaff = await newStaff.save();
+        newAccount = await newAccount.save();
+        res.redirect('/admin/adminViewStaff');
+    }
 }
 
 //add new trainer

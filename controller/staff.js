@@ -1,3 +1,4 @@
+const express = require('express');
 const Account = require('../models/user');
 const trainee = require('../models/trainee');
 const category = require('../models/coursecategory');
@@ -74,6 +75,7 @@ exports.addTrainee = async (req, res) => {
 }
 exports.doAddTrainee = async (req, res) => {
     if (validation.checkAlphabet(req.body.name)) {
+        console.log(req.file.filename);
         let newAccount = new Account({
             email: req.body.email,
             password: "12345678",
@@ -84,6 +86,7 @@ exports.doAddTrainee = async (req, res) => {
             email: req.body.email,
             dateOfBirth: new Date(req.body.date),
             education: req.body.education,
+            img: req.file.filename
         });
         try {
             newTrainee = await newTrainee.save();
