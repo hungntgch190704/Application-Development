@@ -5,16 +5,24 @@ const staffController = require('../controller/staff');
 const category = require('../models/coursecategory');
 const { isStaff } =  require("../middleware/auth");
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/trainees')
+
+const storage = multer.diskStorage({
+    destination:function(req, file, callback){
+        callback(null, 'public/uploads/trainees');
     },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
-    }
+    //add back the extension
+    filename:function(req, file, callback){
+        callback(null, Date.now()+file.originalname);
+    },
 })
-  
-var upload = multer({ storage: storage })
+
+//upload parameters for multer
+const upload = multer({
+    storage:storage,
+    limits:{
+        fieldSize:1024*1024*3
+    },
+})
 
 router.get('/staff', isStaff, staffController.staffindex);
 router.get('/staff/updateProfile', isStaff, staffController.updateProfile);
