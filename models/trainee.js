@@ -20,7 +20,7 @@ const traineeSchema = new mongoose.Schema({
     },
     img: {
         type: String,
-        required: false
+        default: "user.png"
     }
 });
 

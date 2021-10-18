@@ -114,6 +114,9 @@ exports.editTrainee = async (req, res) => {
 exports.doEditTrainee = async (req, res) => {
     let id = req.body.id;
     let aTrainee = await trainee.findById(id);
+    if(req.file){
+        aTrainee.img = req.file.filename;
+    }
     aTrainee.name = req.body.name;
     aTrainee.email = req.body.email;
     aTrainee.dateOfBirth = new Date(req.body.date);
