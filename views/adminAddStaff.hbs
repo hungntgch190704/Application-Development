@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="col-md-8 border-right">
-                    <form class="form" method="post" action='/doAddStaff' enctype="multipart/form-data">
+                    <form class="form" method="post" action='/doAddStaff' id="addStaff" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
@@ -42,27 +42,33 @@
                                     <input class="form-control" type="number" name="age" placeholder="18" min="18">
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col mb-3">
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <textarea class="form-control" rows="5" placeholder="Address"
-                                        name="address"></textarea>
+                                <div class="col form-group">
+                                    <label>Image</label>
+                                    <input type="file" name="picture" id="picture" accept="image/*" required />
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col d-flex justify-content-end">
-                                <button class="btn btn-primary" type="submit">Save</button>
-                                <a href="/admin" class="btn btn-warning">Cancel</a>
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <textarea class="form-control" rows="5" placeholder="Address"
+                                            name="address"></textarea>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="row">
+                                <div class="col d-flex justify-content-end">
+                                    <button class="btn btn-primary" type="submit">Save</button>
+                                    <a href="/admin" class="btn btn-warning">Cancel</a>
+                                </div>
+                            </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script src="/js/validateStaff.js"></script>
 </body>
 
 </html>
