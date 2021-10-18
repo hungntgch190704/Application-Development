@@ -1,21 +1,14 @@
 const express = require('express');
 const router = express.Router();
-// const trainerController = require('../controller/trainee');
+const traineeController = require('../controller/trainee');
+const { isTrainee } =  require("../middleware/auth")
 
-// router.get('/trainee', (req, res) => {
-//     res.render('trainneIndex')
-// });
+router.get('/trainee', isTrainee, traineeController.getTrainee);
 
-// router.get('/trainee/traineeEdit', (req, res) => {
-//     res.render('traineeProfileUpdate')
-// });
+// router.get('/trainee/traineeEdit', isTrainee, traineeController.editTrainee);
 
-// router.get('/trainee/viewTrainee', (req, res) => {
-//     res.render('traineeViewTrainee')
-// });
+// router.get('/trainer/ViewCourses', isTrainee, traineeController.viewCourse);
 
-// router.get('/trainne/viewCourse', (req, res) => {
-//     res.render('traineeViewCourse')
-// });
+// router.post('trainee/SearchCourse', isTrainee, traineeController.searchCourse);
 
 module.exports = router;
