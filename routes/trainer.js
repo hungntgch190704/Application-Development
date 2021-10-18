@@ -17,6 +17,10 @@ router.get('/trainer/ViewCourses', isTrainer, trainerController.viewCourse);
 
 router.post('trainer/SearchCourse', isTrainer, trainerController.searchCourse);
 
+router.get('/trainer/ViewCourseDetail', isTrainer, trainerController.viewCourseDetail);
+
+router.get('/trainer/AssignedCourse',isTrainer, trainerController.viewAssignedCourseDetail);
+
 //trainee
 router.get('/trainer/viewTrainee', isTrainer, trainerController.viewTrainee);
 

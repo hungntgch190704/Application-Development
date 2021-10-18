@@ -48,10 +48,34 @@ exports.searchCourse = async (req, res) => {
 }
 
 //view course details
-// exports.viewAllCourseDetail = async (req, res) => {
-//     let coursedetail = await courseDetail.find();
-//     res.render('trainerViewCourse',{_courseDetail: coursedetail})
-// }
+
+exports.viewAssignedCourseDetail = async (req, res) => {
+    let name = req.session.name;
+    let aTrainer = await trainer.find({name : name},{name : 1});
+    let course_detail = await courseDetail.find({trainer : aTrainer});
+    res.render('trainerAssingedCourse', { course_detail: course_detail, loginName: req.session.email});
+}
+
+exports.viewCourseDetail = async (req, res) => {
+    let id = req.query.id;
+    let course_detail = await courseDetail.findById(id);
+    let trainees_detail = [];
+    for (let item of course_detail.trainees) {
+        try {
+            //console.log(item);
+            let a_trainee = await trainee.findOne({ name: item });
+            trainees_detail.push(a_trainee);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+    res.render('trainerViewCourseDetail', {
+        course_detail: course_detail,
+        trainees_detail: trainees_detail,
+        loginName: req.session.email
+    });
+}
 
 exports.viewCourse = async(req,res)=>{
     let courses = await course.find();
