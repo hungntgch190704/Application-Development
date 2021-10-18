@@ -4,7 +4,7 @@
 {{> head}}
 
 <body class="sb-nav-fixed">
-  {{> trainerhead}}
+  {{> traineehead}}
   <div class="container py-5" style="margin-top: 3%; margin-left: 15%">
     <div class="e-panel card" style="width: 90%; margin-left: 5%">
       <div class="card-body">
@@ -21,15 +21,22 @@
                   <th>Education</th>
                 </tr>
               </thead>
-              <tbody>
-                <input type="hidden" name="id" value="{{aTrainee._id}}">
+              {{!-- <tbody>
+                {{#each aTrainee}}
                 <tr>
-                  <td class="text-nowrap align-middle">{{aTrainee.name}}</td>
-                  <td class="text-nowrap align-middle">{{aTrainee.email}}</td>
-                  <td class="text-nowrap align-middle"><span>{{aTrainee.dateOfBirth}}</span></td>
-                  <td class="text-nowrap align-middle">{{aTrainee.education}}</td>
+                  <td class="text-nowrap align-middle">{{name}}</td>
+                  <td class="text-nowrap align-middle">{{email}}</td>
+                  <td class="text-nowrap align-middle">{{dateofbirth}}</td>
+                  <td class="text-nowrap align-middle">{{education}}</td>
                 </tr>
-              </tbody>
+                {{/each}}
+              </tbody> --}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>
