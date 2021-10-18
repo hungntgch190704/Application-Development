@@ -98,6 +98,7 @@ exports.doAddTrainee = async (req, res) => {
     }
     else {
         res.render('staffAddTrainee', { loginName: req.session.email });
+        
     }
 
 }
@@ -112,7 +113,7 @@ exports.doEditTrainee = async (req, res) => {
     let aTrainee = await trainee.findById(id);
     aTrainee.name = req.body.name;
     aTrainee.email = req.body.email;
-    aTrainee.dateOfBirth = new ISODate(req.body.date);
+    aTrainee.dateOfBirth = new Date(req.body.date);
     aTrainee.education = req.body.education;
     try {
         aTrainee = await aTrainee.save();
