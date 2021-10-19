@@ -8,45 +8,54 @@
     <div class="modal-dialog modal-lg" role="document" style="margin-top: 5%; margin-left: 20%">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Create a Trainee</h2>
+                <h2 class="modal-title">Create a Trainee </h2>
             </div>
-            <div class="modal-body">
-                <div class="py-1">
-                    <form class="form" method="post" action="/doAddTrainee" id="addTrainee">
+            <div class="row">
+                <div class="col-md-3 border-right">
+                    <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                        <img class="rounded-circle mt-5" width="150px" src="/images/user.png">
+                    </div>
+                </div>
+                <div class="col-md-8 border-right">
+                    <form class="form" method="post" action="/doAddTrainee" id="addTrainee" enctype="multipart/form-data">
+
                         <div class="row">
                             <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>Full Name</label>
-                                            <input class="form-control" type="text" name="name" placeholder="Full name"
-                                                required />
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input class="form-control" type="email" name="email"
-                                                placeholder="user@example.com" required />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>Date of Birth</label>
-                                            <input class="form-control" type="date" name="date" required />
-                                        </div>
-                                    </div>
-                                    <div class="col mb-3">
-                                        <div class="form-group">
-                                            <label>Education</label>
-                                            <input class="form-control" type="text" name="education"
-                                                placeholder="Greenwich University" required />
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input class="form-control" type="text" name="name" placeholder="Full name"
+                                        required />
                                 </div>
                             </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="form-control" type="email" name="email" placeholder="user@example.com"
+                                        required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Date of Birth</label>
+                                    <input class="form-control" type="date" name="date" required />
+                                </div>
+                            </div>
+                            <div class="col mb-3">
+                                <div class="col form-group">
+                                <label>Image</label>
+                                <input type="file" name="picture" id="picture" accept="image/*" />
+                            </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class=" col mb-3 form-group">
+                                    <label>Education</label>
+                                    <input class="form-control" type="text" name="education"
+                                        placeholder="Greenwich University" required />
+                                </div>
                         </div>
                         <div class="row">
                             <div class="col d-flex justify-content-end">

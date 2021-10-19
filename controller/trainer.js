@@ -47,11 +47,43 @@ exports.searchCourse = async (req, res) => {
     res.render('trainerViewCourse', { courses: listCourse, loginName : req.session.email });
 }
 
-//view course details
-// exports.viewAllCourseDetail = async (req, res) => {
-//     let coursedetail = await courseDetail.find();
-//     res.render('trainerViewCourse',{_courseDetail: coursedetail})
-// }
+//course details
+
+exports.viewAssignedCourseDetail = async (req, res) => {
+    let trainer = await trainer.find();
+    let course_detail = await courseDetail.find({trainer : trainer.name});
+    res.render('trainerAssignedCourse', { course_detail: course_detail, loginName: req.session.email});
+}
+
+exports.viewCourseDetail = async (req, res) => {
+    let id = req.query.id;
+    let course_detail = await courseDetail.findById(id);
+    let trainees_detail = [];
+    for (let item of course_detail.trainees) {
+        try {
+            //console.log(item);
+            let a_trainee = await trainee.findOne({ name: item });
+            trainees_detail.push(a_trainee);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+    res.render('trainerViewCourseDetail', {
+        course_detail: course_detail,
+        trainees_detail: trainees_detail,
+        loginName: req.session.email
+    });
+}
+
+exports.searchCourseDetail = async (req, res) => {
+    const searchText = req.body.keyword;
+    console.log(searchText);
+    const searchCondition = new RegExp(searchText, 'i')
+    let course_detail = await courseDetail.find({ name: searchCondition });
+    console.log(course_detail);
+    res.render('trainerAssignedCourse', { _course_detail: course_detail, _keyword: searchText, loginName: req.session.email });
+}
 
 exports.viewCourse = async(req,res)=>{
     let courses = await course.find();
@@ -72,8 +104,8 @@ exports.updateTrainer = async (req, res) =>{
 }
 
 exports.doUpdateTrainer = async (req, res) =>{
-    let email = req.query.email;
-    let aTrainer = await trainer.find(email);
+    let id = req.query.id;
+    let aTrainer = await trainer.findById(id);
     aTrainer.name = req.body.name;
     aTrainer.email = req.body.email;
     aTrainer.speciality = req.body.speciality;
@@ -108,4 +140,42 @@ exports.searchTrainee= async (req, res) => {
         trainees = await trainee.find({name: searchCondition});
     } 
     res.render('trainerViewTrainee', { trainees: trainees , loginName : req.session.email});
+}
+
+//change password
+exports.changePassword = async (req, res) => {
+    res.render('trainerChangePass', { loginName: req.session.email })
+}
+
+//do change password
+exports.doChangePassword = async (req, res) => {
+    let acc = await Account.findOne({ email: req.session.email });
+    let password = acc.password;
+    let oldpw = req.body.old;
+    let newpw = req.body.new;
+    let confirmpw = req.body.confirm;
+    if (password != oldpw) {
+        let error = "Old password is incorrect!"
+        res.render('traineeChangePass', { error1: error, loginName: req.session.email })
+    }
+    else if (newpw.length < 8) {
+        let error = "Password must contain 8 characters or more!"
+        res.render('traineeChangePass', { error2: error, loginName: req.session.email })
+    }
+    else if (newpw != confirmpw) {
+        let error = "New Password and Confirm Password do not match!"
+        res.render('traineeChangePass', { error3: error, loginName: req.session.email })
+    }
+    else {
+        acc.password = newpw;
+        try {
+            acc = await acc.save();
+            req.session.user = acc;
+            res.redirect('/trainer');
+        }
+        catch (error) {
+            console.log(error);
+            res.redirect('/trainer/changePassword');
+        }
+    }
 }

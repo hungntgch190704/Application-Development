@@ -18,4 +18,9 @@ function checkPhone(value){
     return regex.test(value) && value.trim().length==10;
 }
 
-module.exports = {checkEmpty,checkAlphabet,checkLength,checkPhone}
+//validate email
+function validateEmail(value){
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(value);    
+}
+module.exports = {checkEmpty,checkAlphabet,checkLength,checkPhone, validateEmail}

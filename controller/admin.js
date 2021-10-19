@@ -16,6 +16,7 @@ exports.addStaff =  (req, res) =>{
         email:req.body.email,
         age: req.body.age,
         address:req.body.address,
+        img: req.file.filename
     })
     let newAccount = new Account({
         email: req.body.email,
@@ -41,6 +42,7 @@ exports.addTrainer =  (req, res) =>{
         speciality: req.body.speciality,
         age: req.body.age,
         address:req.body.address,
+        img: req.file.filename
     })
     let newAccount = new Account({
         email: req.body.email,
@@ -88,10 +90,14 @@ exports.editStaff = async (req, res) =>{
 exports.updateStaff = async (req, res) =>{
     let id = req.body.id;
     let aStaff = await staff.findById(id);
+    if(req.file){
+        aStaff.img = req.file.filename;
+    }
     aStaff.name = req.body.name;
     aStaff.email = req.body.email;
     aStaff.age = req.body.age;
     aStaff.address = req.body.address;
+    
     try{
         aStaff = await aStaff.save();
         res.redirect('/admin/adminViewStaff');
@@ -111,6 +117,12 @@ exports.editTrainer = async (req, res) =>{
 exports.updateTrainer = async (req, res) =>{
     let id = req.body.id;
     let aTrainer = await trainer.findById(id);
+    console.log(aTrainer)
+    if(req.file){
+        aTrainer.img = req.file.filename;
+        console.log(req.file.filename);
+    }
+    console.log(req.body.name);
     aTrainer.name = req.body.name;
     aTrainer.email = req.body.email;
     aTrainer.speciality = req.body.speciality;

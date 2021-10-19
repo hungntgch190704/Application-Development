@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="sb-nav-fixed">
+    {{> head}}
+    {{> trainerhead}}
+
+    <div class="container py-5" style="margin-top: 3%; margin-left: 15%">
+        <!-- Searching -->
+        <div class="form-group">
+            <div class="input-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <form class="form" method="post" action="/trainer/searchCourseDetail"
+                                style="display: flex; margin-right: 9%;">
+                                <input type="search" name="keyword" class="form-control rounded" value="{{_keyword}}"
+                                    placeholder="Search Course" aria-label="Search" aria-describedby="search-addon" />
+                                <hr -3>
+                                <button type="submit" class="btn btn-success">search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="e-panel card" style="width: 90%; margin-left: 5%">
+            <div class="card-body">
+                <div class="card-title">
+                </div>
+                <div class="e-table">
+                    <div class="table-responsive table-lg mt-3">
+                        <table class="table table-bordered">
+                            <thead>
+
+                                <tr>
+                                    <th class="max-width" style="text-align:center">Course Name</th>
+                                    <th class="max-width" style="text-align:center">Course Category</th>
+                                    <th class="sortable" style="text-align:center">Trainer</th>
+                                    <th class="sortable" style="text-align:center">Total Trainee</th>
+                                    <th style="text-align:center">Actions</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                {{#each course_detail}}
+                                <tr>
+                                    <td class="text-nowrap" style="text-align:center"><span>{{name}}</span></td>
+                                    <td class="text-nowrap" style="text-align:center"><span>{{category}}</span></td>
+                                    <td class="text-nowrap" style="text-align:center"><span>{{trainer}}</span></td>
+                                    <td class="text-nowrap" style="text-align:center"><span>{{trainees.length}}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group align-top">
+                                            <a href="/trainer/CourseDetail/view?id={{_id}}" class="btn btn-success">
+                                                <span class="glyphicon glyphicon-edit"></span>
+                                                <span><strong>View</strong></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

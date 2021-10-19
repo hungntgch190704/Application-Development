@@ -31,7 +31,8 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="max-width" style="text-align:center">Name</th>
+                                    <th class="max-width" style="text-align:center" >Name</th>
+                                    <th class="max-width" style="text-align:center; width: 150px">Image</th>
                                     <th class="max-width" style="text-align:center">Email</th>
                                     <th class="sortable" style="text-align:center">Date of Birth</th>
                                     <th style="text-align:center">Education</th>
@@ -41,8 +42,12 @@
                             <tbody>
                                 {{#each trainees}}
                                 <tr>
-
                                     <td class="text-nowrap align-middle">{{name}}</td>
+                                    <td class="text-nowrap align-middle">
+                                        <center>
+                                            <img src="/uploads/trainees/{{img}}" alt="{{name}}" width="50px" height="70px">
+                                        </center>
+                                    </td>
                                     <td class="text-nowrap align-middle">{{email}}</td>
                                     <td class="text-nowrap align-middle"><span>{{dateFormat dateOfBirth "YYYY-MM-DD"}}</span></td>
                                     <td class="text-nowrap align-middle"><span>{{education}}</span></td>

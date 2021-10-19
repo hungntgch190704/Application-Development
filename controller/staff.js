@@ -1,3 +1,4 @@
+const express = require('express');
 const Account = require('../models/user');
 const trainee = require('../models/trainee');
 const category = require('../models/coursecategory');
@@ -18,6 +19,9 @@ exports.updateProfile = async (req, res) => {
 exports.doUpdateProfile = async (req, res) => {
     let id = req.body.id;
     let aStaff = await staff.findById(id);
+    if(req.file){
+        aStaff.img = req.file.filename;
+    }
     aStaff.name = req.body.name;
     aStaff.age = req.body.age;
     aStaff.address = req.body.address;
@@ -73,7 +77,6 @@ exports.addTrainee = async (req, res) => {
     res.render('staffAddTrainee', { loginName: req.session.email });
 }
 exports.doAddTrainee = async (req, res) => {
-    if (validation.checkAlphabet(req.body.name)) {
         let newAccount = new Account({
             email: req.body.email,
             password: "12345678",
@@ -84,6 +87,7 @@ exports.doAddTrainee = async (req, res) => {
             email: req.body.email,
             dateOfBirth: new Date(req.body.date),
             education: req.body.education,
+            img: req.file.filename
         });
         try {
             newTrainee = await newTrainee.save();
@@ -95,11 +99,7 @@ exports.doAddTrainee = async (req, res) => {
             console.log(error);
             res.redirect('/staff/trainee');
         }
-    }
-    else {
-        res.render('staffAddTrainee', { loginName: req.session.email });
-        
-    }
+
 
 }
 exports.editTrainee = async (req, res) => {
@@ -111,6 +111,9 @@ exports.editTrainee = async (req, res) => {
 exports.doEditTrainee = async (req, res) => {
     let id = req.body.id;
     let aTrainee = await trainee.findById(id);
+    if(req.file){
+        aTrainee.img = req.file.filename;
+    }
     aTrainee.name = req.body.name;
     aTrainee.email = req.body.email;
     aTrainee.dateOfBirth = new Date(req.body.date);
