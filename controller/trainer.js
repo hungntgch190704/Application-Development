@@ -33,35 +33,25 @@ exports.searchCategory = async (req, res) => {
 //search course
 exports.searchCourse = async (req, res) => {
     const searchText = req.body.keyword;
-    let listCourse;
-    let checkAlphaName = validation.checkAlphabet(searchText);
-    let checkEmpty = validation.checkEmpty(searchText);
-    const searchCondition = new RegExp(searchText,'i');
-
-    if(!checkEmpty){
-        res.redirect('/trainer/ViewCourse');
-    }
-    else if(checkAlphaName){
-        listCourse = await course.find({name: searchCondition});
-    }
-    res.render('trainerViewCourse', { courses: listCourse, loginName : req.session.email });
+    console.log(searchText);
+    const searchCondition = new RegExp(searchText, 'i')
+    let course = await course.find({ name: searchCondition });
+    console.log(course);
+    res.render('trainerViewCourse', { course: course, loginName: req.session.email })
 }
+    
 
 //course details
-
-exports.viewAssignedCourseDetail = async (req, res) => {
-    let trainer = await trainer.find();
-    let course_detail = await courseDetail.find({trainer : trainer.name});
-    res.render('trainerAssignedCourse', { course_detail: course_detail, loginName: req.session.email});
+exports.viewAssignedCourse = async (req, res) => {
+    res.render('trainerAssignedCourse', { course_detail: req.session.courses, loginName: req.session.email});
 }
 
-exports.viewCourseDetail = async (req, res) => {
+exports.viewAssignedCourseDetail = async (req, res) => {
     let id = req.query.id;
     let course_detail = await courseDetail.findById(id);
     let trainees_detail = [];
     for (let item of course_detail.trainees) {
         try {
-            //console.log(item);
             let a_trainee = await trainee.findOne({ name: item });
             trainees_detail.push(a_trainee);
         }
@@ -104,11 +94,12 @@ exports.updateTrainer = async (req, res) =>{
 }
 
 exports.doUpdateTrainer = async (req, res) =>{
-    let id = req.query.id;
+    let id = req.body.id;
     let aTrainer = await trainer.findById(id);
-    aTrainer.name = req.body.name;
+    if(req.file){
+        aTrainer.img = req.file.filename;
+    }
     aTrainer.email = req.body.email;
-    aTrainer.speciality = req.body.speciality;
     aTrainer.age = req.body.age;
     aTrainer.address = req.body.address;
     try{

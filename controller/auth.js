@@ -1,6 +1,7 @@
 const Account = require('../models/user');
 const trainee = require('../models/trainee');
 const courseDetail = require('../models/courseDetail')
+const trainer = require('../models/trainer');
 exports.handleLogin = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -23,6 +24,10 @@ exports.handleLogin = async (req, res) => {
                 req.session.user = acc;
                 req.session.email = username;
                 req.session.trainer = true;
+                let aTrainer = await trainer.findOne({email: username});
+                let courses = await courseDetail.find({trainer : aTrainer.name});
+                console.log(courses);
+                req.session.courses = courses;
                 res.redirect('/trainer');
             }
             else{
