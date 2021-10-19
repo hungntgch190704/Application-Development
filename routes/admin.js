@@ -36,4 +36,8 @@ router.post('/admin/adminSearchTrainer', isAdmin, adminController.searchTrainer)
 
 router.get('/admin/adminChangePassStaff', isAdmin, adminController.setDefaultPass);
 
+router.get('/admin/adminChangePassword', isAdmin, adminController.getChangePass)
+
+router.post('/admin/changeAdPass', isAdmin, adminController.doChangePass)
+
 module.exports = router;

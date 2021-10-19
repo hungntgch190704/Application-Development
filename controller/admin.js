@@ -2,14 +2,15 @@ const Account = require('../models/user');
 const staff = require('../models/staff');
 const trainer = require('../models/trainer');
 const validation = require('./validation');
-const courseDetail = require('../models/courseDetail')
+const courseDetail = require('../models/courseDetail');
+const bcrypt = require('bcrypt');
 
 exports.getAdmin = async (req, res) =>{
     res.render('admin', {loginName : req.session.email})
 }
 
 // add new staff
-exports.addStaff = async (req, res) =>{
+exports.addStaff =  (req, res) =>{
     let newStaff = new staff({
         name: req.body.name,
         email:req.body.email,
@@ -21,13 +22,19 @@ exports.addStaff = async (req, res) =>{
         password: "12345678",
         Role: "staff"
     })
-    newStaff = await newStaff.save();
-    newAccount = await newAccount.save();
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newAccount.password, salt, (err,hash) => {
+            if(err) throw err;
+            newAccount.password = hash;
+            newStaff =  newStaff.save();
+            newAccount =  newAccount.save();
+        })
+    })
     res.redirect('/admin/adminViewStaff');
 }
 
 //add new trainer
-exports.addTrainer = async (req, res) =>{
+exports.addTrainer =  (req, res) =>{
     let newTrainer = new trainer({
         name: req.body.name,
         email:req.body.email,
@@ -40,8 +47,14 @@ exports.addTrainer = async (req, res) =>{
         password: "12345678",
         Role: "trainer"
     })
-    newTrainer = await newTrainer.save();
-    newAccount = await newAccount.save();
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newAccount.password, salt, (err,hash) => {
+            if(err) throw err;
+            newAccount.password = hash;
+            newTrainer =  newTrainer.save();
+            newAccount =  newAccount.save();
+        })
+    })
     res.redirect('/admin/adminViewTrainer');
 }
 
@@ -182,18 +195,81 @@ exports.searchTrainer= async (req, res) => {
     res.render('adminViewTrainer', { listTrainer: listTrainer, loginName : req.session.email });
 }
 
-exports.setDefaultPass = async (req, res)=> {
+exports.setDefaultPass =  (req, res)=> {
     let id = req.query.id; 
     console.log(id);
-    let aStaff = await staff.findById(id);
-    let account = await Account.findOne({ 'email': aStaff.email }).exec()
+    let aStaff =  staff.findById(id);
+    let account =  Account.findOne({ 'email': aStaff.email }).exec()
     account.password = "12345678";
     try{
-        account = await account.save();
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(account.password, salt, (err, hash) => {
+                if(err) throw err;
+                account.password = hash;
+                account =  account.save();
+            })
+        })
+        // account = await account.save();
         res.redirect('/admin/adminViewStaff');
     }
     catch(error){
         console.log(error);
         res.redirect('/admin/adminViewStaff');
+    }
+}
+
+exports.getChangePass = (req, res) => {
+    res.render('/changePass', { loginName: req.session.email })
+}
+
+exports.doChangePass = (req, res) => {
+    let acc = Account.findOne({ email: req.session.email });
+    let current = req.body.current;
+    let newpw = req.body.new;
+    let confirm = req.body.confirm;
+    let errors=[];
+    let flag = true;
+    try{
+        Account.findOne({email:req.session.email})
+        .then(user => {
+            bcrypt.compare(current, user.password)
+            .then((doMatch) => {
+                if(doMatch) {
+                    if(newpw.length <8){
+                        flag=false;
+                        errors[length] = "Password must contain 8 characters or more!";
+                    }
+                    if(newpw != confirm){
+                        flag=false;
+                        errors[check] = "New Password and Confirm Password do not match!"
+                    }
+                }
+                else{
+                    flag = false;
+                    errors[current] = "Old password is incorrect!";
+                }
+            })
+        })
+    } catch(err){
+        console.log(err);
+    }
+    if(!flag){
+        res.render('changePass', {errors: errors, loginName: req.session.email})
+    }
+    else{
+        try{
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newpw, salt, (err, hash) => {
+                    if(err) throw err;
+                    acc.password = hash;
+                    acc =  acc.save();
+                    req.session.user = acc;
+                    res.redirect('/admin')
+                })
+            })
+        } catch (err) {
+            console.log(err);
+            res.redirect('/admin/changePass')
+        }
     }
 }
