@@ -17,9 +17,13 @@ router.get('/trainer/ViewCourses', isTrainer, trainerController.viewCourse);
 
 router.post('trainer/SearchCourse', isTrainer, trainerController.searchCourse);
 
+//course detail
+
 router.get('/trainer/ViewCourseDetail', isTrainer, trainerController.viewCourseDetail);
 
 router.get('/trainer/AssignedCourse',isTrainer, trainerController.viewAssignedCourseDetail);
+
+router.post('/trainer/searchCourseDetail', isTrainer, trainerController.searchCourseDetail);
 
 //trainee
 router.get('/trainer/viewTrainee', isTrainer, trainerController.viewTrainee);
@@ -31,6 +35,9 @@ router.get('/trainer/trainerCategory', isTrainer, trainerController.viewAllCateg
 
 router.post('/trainer/searchCategory', isTrainer,  trainerController.searchCategory);
 
+//password
+router.get('/trainer/changePassword',isTrainer,  trainerController.changePassword);
 
+router.post('/trainer/doChangePassword', isTrainer, trainerController.doChangePassword);
 
 module.exports = router;
