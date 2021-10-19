@@ -96,15 +96,20 @@ exports.updateTrainer = async (req, res) =>{
 exports.doUpdateTrainer = async (req, res) =>{
     let id = req.body.id;
     let aTrainer = await trainer.findById(id);
+    console.log(aTrainer)
     if(req.file){
         aTrainer.img = req.file.filename;
+        console.log(req.file.filename);
     }
+    console.log(req.body.name);
+    aTrainer.name = req.body.name;
     aTrainer.email = req.body.email;
+    aTrainer.speciality = req.body.speciality;
     aTrainer.age = req.body.age;
     aTrainer.address = req.body.address;
     try{
         aTrainer = await aTrainer.save();
-        res.redirect('/trainer');;
+        res.redirect('/trainer');
     }
     catch(error){
         console.log(error);

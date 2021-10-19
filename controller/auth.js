@@ -1,5 +1,6 @@
 const Account = require('../models/user');
 const trainee = require('../models/trainee');
+const trainer = require('../models/trainer');
 const courseDetail = require('../models/courseDetail')
 const bcrypt = require('bcrypt');
 // exports.handleLogin = async (req, res) => {
