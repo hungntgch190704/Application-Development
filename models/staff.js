@@ -17,6 +17,10 @@ const staffSchema = new mongoose.Schema({
     address:{
         type: String,
         required: true
+    },
+    img: {
+        type: String,
+        default: "user.png"
     }
 });
 

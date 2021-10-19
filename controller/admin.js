@@ -10,35 +10,21 @@ exports.getAdmin = async (req, res) =>{
 
 // add new staff
 exports.addStaff = async (req, res) =>{
-
-    let validateEmail = validation.validateEmail(req.body.email);
-    let checkName = validation.checkAlphabet(req.body.name);
-    let errors = [];
-    if(!validateEmail){
-        errors["email"] = 'Email is not valid';
-    }
-    if(!checkName){
-        errors["name"] = 'Name is not valid';
-    }
-    if(!validateEmail || !checkName){
-        res.render('adminAddStaff', {errors: errors})
-    }
-    else{
-        let newStaff = new staff({
-            name: req.body.name,
-            email:req.body.email,
-            age: req.body.age,
-            address:req.body.address,
-        })
-        let newAccount = new Account({
-            email: req.body.email,
-            password: "12345678",
-            Role: "staff"
-        })
-        newStaff = await newStaff.save();
-        newAccount = await newAccount.save();
-        res.redirect('/admin/adminViewStaff');
-    }
+    let newStaff = new staff({
+        name: req.body.name,
+        email:req.body.email,
+        age: req.body.age,
+        address:req.body.address,
+        img: req.file.filename
+    })
+    let newAccount = new Account({
+        email: req.body.email,
+        password: "12345678",
+        Role: "staff"
+    })
+    newStaff = await newStaff.save();
+    newAccount = await newAccount.save();
+    res.redirect('/admin/adminViewStaff');
 }
 
 //add new trainer
@@ -49,6 +35,7 @@ exports.addTrainer = async (req, res) =>{
         speciality: req.body.speciality,
         age: req.body.age,
         address:req.body.address,
+        img: req.file.filename
     })
     let newAccount = new Account({
         email: req.body.email,
@@ -90,10 +77,14 @@ exports.editStaff = async (req, res) =>{
 exports.updateStaff = async (req, res) =>{
     let id = req.body.id;
     let aStaff = await staff.findById(id);
+    if(req.file){
+        aStaff.img = req.file.filename;
+    }
     aStaff.name = req.body.name;
     aStaff.email = req.body.email;
     aStaff.age = req.body.age;
     aStaff.address = req.body.address;
+    
     try{
         aStaff = await aStaff.save();
         res.redirect('/admin/adminViewStaff');
@@ -113,6 +104,12 @@ exports.editTrainer = async (req, res) =>{
 exports.updateTrainer = async (req, res) =>{
     let id = req.body.id;
     let aTrainer = await trainer.findById(id);
+    console.log(aTrainer)
+    if(req.file){
+        aTrainer.img = req.file.filename;
+        console.log(req.file.filename);
+    }
+    console.log(req.body.name);
     aTrainer.name = req.body.name;
     aTrainer.email = req.body.email;
     aTrainer.speciality = req.body.speciality;
