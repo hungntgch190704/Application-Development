@@ -1,3 +1,4 @@
+const Account = require('../models/user');
 const trainer = require('../models/trainer');
 const trainee = require('../models/trainee');
 const course = require('../models/course');
@@ -151,18 +152,20 @@ exports.doChangePassword = async (req, res) => {
     let confirmpw = req.body.confirm;
     if (password != oldpw) {
         let error = "Old password is incorrect!"
-        res.render('traineeChangePass', { error1: error, loginName: req.session.email })
+        res.render('trainerChangePass', { error1: error, loginName: req.session.email })
     }
     else if (newpw.length < 8) {
         let error = "Password must contain 8 characters or more!"
-        res.render('traineeChangePass', { error2: error, loginName: req.session.email })
+        res.render('trainerChangePass', { error2: error, loginName: req.session.email })
     }
     else if (newpw != confirmpw) {
         let error = "New Password and Confirm Password do not match!"
-        res.render('traineeChangePass', { error3: error, loginName: req.session.email })
+        res.render('trainerChangePass', { error3: error, loginName: req.session.email })
     }
     else {
         acc.password = newpw;
+        let confirm = "Password changed successfully"
+        res.render('trainerChangePass', { confirm: confirm, loginName: req.session.email })
         try {
             acc = await acc.save();
             req.session.user = acc;
