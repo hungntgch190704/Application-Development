@@ -1,6 +1,5 @@
 const Account = require('../models/user');
 const trainee = require('../models/trainee');
-const trainer = require('../models/trainer');
 const courseDetail = require('../models/courseDetail')
 const bcrypt = require('bcrypt');
 // exports.handleLogin = async (req, res) => {
@@ -102,8 +101,10 @@ exports.handleLogin = (req, res) => {
                         req.session.courses = courses;
                         res.redirect('/trainee');
                     }
+                }else{
+                    return res.render('index', {errors: 'Username or password is incorrect'})
                 }
-                return res.render('index', {errors: 'Username or password is incorrect'})
+                
             })
         })
             .catch(err => {
