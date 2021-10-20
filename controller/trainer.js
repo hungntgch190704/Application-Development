@@ -88,8 +88,7 @@ exports.viewTrainee = async (req, res) => {
 
 //trainer
 exports.updateTrainer = async (req, res) =>{
-    let id = req.query.id;
-    let aTrainer = await trainer.findById(id);
+    let aTrainer = await trainer.findOne({ email: req.session.email });
     res.render('trainerProfileUpdate',{aTrainer: aTrainer, loginName : req.session.email})
 }
 
