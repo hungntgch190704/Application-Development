@@ -20,7 +20,9 @@ exports.getProfile = async(req,res)=>{
 exports.updateProfile = async(req,res)=>{
     let id = req.body.id;
     let aTrainee = await trainee.findById(id);
-    aTrainee.name = req.body.name;
+    if (req.file) {
+        aTrainee.img = req.file.filename;
+    }
     aTrainee.dateOfBirth = new Date(req.body.date);
     aTrainee.education = req.body.education;
     aTrainee = await aTrainee.save();
