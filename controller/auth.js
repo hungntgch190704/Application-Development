@@ -55,62 +55,60 @@ const bcrypt = require('bcrypt');
 // };
 
 
-exports.handleLogin = (req, res) => {
+exports.handleLogin = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    let courses = [];
     try {
-        Account.findOne({ email: username }).then(user => {
-            console.log(user);
-            console.log(password)
-            console.log(user.password);
-            bcrypt.compare(password, user.password).then((doMatch) => {
-                console.log("vkl")
-                if (doMatch) {
-                    if (user.Role == 'staff') {
-                        req.session.user = user;
-                        req.session.email = username;
-                        req.session.staff = true;
-                        res.redirect('/staff');
+        let user = await Account.findOne({ email: username });
+        if (user.Role == 'trainer') {
+            let aTrainer = await trainer.findOne({ email: username });
+            courses = courseDetail.find({ trainer: aTrainer.name });
+            console.log(courses);
+        } else if (user.Role == 'trainee') {
+            let atrainee = await trainee.findOne({ email: username });
+            let courseD = await courseDetail.find();
+            for (let aCourseD of courseD) {
+                for (let c of aCourseD.trainees) {
+                    if (c == atrainee.name) {
+                        courses.push(aCourseD);
                     }
-                    else if (user.Role == 'admin') {
-                        req.session.user = user;
-                        req.session.email = username;
-                        req.session.admin = true;
-                        res.redirect('/admin');
-                    }
-                    else if (user.Role == 'trainer') {
-                        req.session.user = user;
-                        req.session.email = username;
-                        req.session.trainer = true;
-                        let aTrainer = trainer.findOne({email: username});
-                        let courses = courseDetail.find({trainer : aTrainer.name});
-                        console.log(courses);
-                        req.session.courses = courses;
-                        res.redirect('/trainer');
-                    }
-                    else {
-                        req.session.user = user;
-                        req.session.email = username;
-                        req.session.trainee = true;
-                        let atrainee = trainee.findOne({ email: username });
-                        let courses = [];
-                        let courseD = courseDetail.find();
-                        for (let aCourseD of courseD) {
-                            for (let c of aCourseD.trainees) {
-                                if (c == atrainee.name) {
-                                    courses.push(aCourseD);
-                                }
-                            }
-                        }
-                        console.log(courses);
-                        req.session.courses = courses;
-                        res.redirect('/trainee');
-                    }
-                }else{
-                    return res.render('index', {errors: 'Username or password is incorrect'})
                 }
-                
-            })
+            }
+            console.log(courses);
+        }
+        await bcrypt.compare(password, user.password).then((doMatch) => {
+            if (doMatch) {
+                if (user.Role == 'staff') {
+                    req.session.user = user;
+                    req.session.email = username;
+                    req.session.staff = true;
+                    res.redirect('/staff');
+                }
+                else if (user.Role == 'admin') {
+                    req.session.user = user;
+                    req.session.email = username;
+                    req.session.admin = true;
+                    res.redirect('/admin');
+                }
+                else if (user.Role == 'trainer') {
+                    req.session.user = user;
+                    req.session.email = username;
+                    req.session.trainer = true;
+                    req.session.courses = courses;
+                    res.redirect('/trainer');
+                }
+                else {
+                    req.session.user = user;
+                    req.session.email = username;
+                    req.session.trainee = true;
+                    req.session.courses = courses;
+                    res.redirect('/trainee');
+                }
+            } else {
+                return res.render('index', { errors: 'Username or password is incorrect' })
+            }
+
         })
             .catch(err => {
                 console.log(err)
