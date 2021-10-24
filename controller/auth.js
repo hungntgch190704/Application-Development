@@ -1,5 +1,6 @@
 const Account = require('../models/user');
 const trainee = require('../models/trainee');
+const trainer = require('../models/trainer');
 const courseDetail = require('../models/courseDetail')
 const bcrypt = require('bcrypt');
 // exports.handleLogin = async (req, res) => {
@@ -81,6 +82,10 @@ exports.handleLogin = (req, res) => {
                         req.session.user = user;
                         req.session.email = username;
                         req.session.trainer = true;
+                        let aTrainer = trainer.findOne({email: username});
+                        let courses = courseDetail.find({trainer : aTrainer.name});
+                        console.log(courses);
+                        req.session.courses = courses;
                         res.redirect('/trainer');
                     }
                     else {
