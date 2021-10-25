@@ -110,12 +110,12 @@ exports.handleLogin = async (req, res) => {
             }
 
         })
-            .catch(err => {
-                console.log(err)
-            })
+            // .catch(err => {
+            //     console.log(err)
+            // })
     } catch (error) {
-        console.log(error);
-        res.render('index');
+        //console.log(error);
+        //return res.render('index');
     }
 };
 
