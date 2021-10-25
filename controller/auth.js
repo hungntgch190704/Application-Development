@@ -105,12 +105,12 @@ exports.handleLogin = (req, res) => {
                 return res.render('index', {errors: 'Username or password is incorrect'})
             })
         })
-            .catch(err => {
-                console.log(err)
-            })
+            // .catch(err => {
+            //     console.log(err)
+            // })
     } catch (error) {
-        console.log(error);
-        res.render('index');
+        //console.log(error);
+        //return res.render('index');
     }
 };
 
