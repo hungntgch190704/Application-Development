@@ -2,6 +2,7 @@ const trainee = require('../models/trainee');
 const Account = require('../models/user');
 const course = require('../models/course');
 const courseDetail = require('../models/courseDetail')
+const bcrypt = require('bcrypt');
 
 const express = require('express');
 
@@ -19,7 +20,9 @@ exports.getProfile = async(req,res)=>{
 exports.updateProfile = async(req,res)=>{
     let id = req.body.id;
     let aTrainee = await trainee.findById(id);
-    aTrainee.name = req.body.name;
+    if (req.file) {
+        aTrainee.img = req.file.filename;
+    }
     aTrainee.dateOfBirth = new Date(req.body.date);
     aTrainee.education = req.body.education;
     aTrainee = await aTrainee.save();
@@ -60,32 +63,49 @@ exports.changePassword = async (req, res) => {
 //do change password
 exports.doChangePassword = async (req, res) => {
     let acc = await Account.findOne({ email: req.session.email });
-    let password = acc.password;
     let oldpw = req.body.old;
     let newpw = req.body.new;
     let confirmpw = req.body.confirm;
-    if (password != oldpw) {
-        let error = "Old password is incorrect!"
-        res.render('traineeChangePass', { error1: error, loginName: req.session.email })
-    }
-    else if (newpw.length < 8) {
-        let error = "Password must contain 8 characters or more!"
-        res.render('traineeChangePass', { error2: error, loginName: req.session.email })
-    }
-    else if (newpw != confirmpw) {
-        let error = "New Password and Confirm Password do not match!"
-        res.render('traineeChangePass', { error3: error, loginName: req.session.email })
-    }
-    else {
-        acc.password = newpw;
-        try {
-            acc = await acc.save();
+    let errors= {};
+    let flag = true;
+    try {
+        await bcrypt.compare(oldpw, acc.password)
+            .then((doMatch) => {
+                if (doMatch) {
+                    if (newpw.length < 8) {
+                        flag = false;
+                        Object.assign(errors, { length: "Password must contain 8 characters or more!" });
+                    }
+                    else if (newpw != confirmpw) {
+                        flag = false;
+                        Object.assign(errors, { check: "New Password and Confirm Password do not match!" });
+                    }
+                }
+                else {
+                    flag = false;
+                    console.log(acc.password);
+                    Object.assign(errors, { current: "Old password is incorrect!" });
+                }
+            });
+        console.log(flag);
+        console.log(errors);
+        if (!flag) {
+            res.render('traineeChangePass', { errors: errors, loginName: req.session.email })
+        }
+        else {
+            await bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newpw, salt, (err, hash) => {
+                    if (err) throw err;
+                    acc.password = hash;
+                    acc = acc.save();
+                })
+            });
+            
             req.session.user = acc;
-            res.redirect('/trainee');
+            res.redirect('/trainee')
         }
-        catch (error) {
-            console.log(error);
-            res.redirect('/trainee/changePassword');
-        }
+    } catch (err) {
+        console.log(err);
+        res.redirect('/trainee/changePassword')
     }
 }

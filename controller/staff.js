@@ -8,6 +8,8 @@ const trainer = require('../models/trainer');
 const staff = require('../models/staff')
 const validation = require('./validation');
 const dbHandler = require('../db/dbHandler');
+const bcrypt = require('bcrypt');
+
 exports.staffindex = async (req, res) => {
     res.render('staffIndex', { loginName: req.session.email });
 }
@@ -19,7 +21,7 @@ exports.updateProfile = async (req, res) => {
 exports.doUpdateProfile = async (req, res) => {
     let id = req.body.id;
     let aStaff = await staff.findById(id);
-    if(req.file){
+    if (req.file) {
         aStaff.img = req.file.filename;
     }
     aStaff.name = req.body.name;
@@ -39,35 +41,54 @@ exports.changePassword = async (req, res) => {
 }
 exports.doChangePassword = async (req, res) => {
     let acc = await Account.findOne({ email: req.session.email });
-    let password = acc.password;
     let oldpw = req.body.old;
     let newpw = req.body.new;
     let confirmpw = req.body.confirm;
-    if (password != oldpw) {
-        let error = "Old password is incorrect!"
-        res.render('staffChangePassword', { error1: error, loginName: req.session.email })
-    }
-    else if (newpw.length < 8) {
-        let error = "Password must contain 8 characters or more!"
-        res.render('staffChangePassword', { error2: error, loginName: req.session.email })
-    }
-    else if (newpw != confirmpw) {
-        let error = "New Password and Confirm Password do not match!"
-        res.render('staffChangePassword', { error3: error, loginName: req.session.email })
-    }
-    else {
-        acc.password = newpw;
-        try {
-            acc = await acc.save();
+    let errors= {};
+    let flag = true;
+    try {
+        await bcrypt.compare(oldpw, acc.password)
+            .then((doMatch) => {
+                if (doMatch) {
+                    if (newpw.length < 8) {
+                        flag = false;
+                        Object.assign(errors, { length: "Password must contain 8 characters or more!" });
+                    }
+                    else if (newpw != confirmpw) {
+                        flag = false;
+                        Object.assign(errors, { check: "New Password and Confirm Password do not match!" });
+                    }
+                }
+                else {
+                    flag = false;
+                    console.log(acc.password);
+                    Object.assign(errors, { current: "Old password is incorrect!" });
+                }
+            });
+        console.log(flag);
+        console.log(errors);
+        if (!flag) {
+            res.render('staffChangePassword', { errors: errors, loginName: req.session.email })
+        }
+        else {
+            await bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newpw, salt, (err, hash) => {
+                    if (err) throw err;
+                    acc.password = hash;
+                    acc = acc.save();
+                })
+            });
+            
             req.session.user = acc;
-            res.redirect('/staff');
+            res.redirect('/staff')
         }
-        catch (error) {
-            console.log(error);
-            res.redirect('/staff/changePassword');
-        }
+    } catch (err) {
+        console.log(err);
+        res.redirect('/staff/changePassword')
     }
+
 }
+
 //trainee
 exports.viewAllTrainee = async (req, res) => {
     let trainees = await trainee.find();
@@ -77,30 +98,45 @@ exports.addTrainee = async (req, res) => {
     res.render('staffAddTrainee', { loginName: req.session.email });
 }
 exports.doAddTrainee = async (req, res) => {
-        let newAccount = new Account({
-            email: req.body.email,
-            password: "12345678",
-            Role: "trainee"
-        });
-        let newTrainee = new trainee({
+    let newAccount = new Account({
+        email: req.body.email,
+        password: "12345678",
+        Role: "trainee"
+    });
+    let newTrainee;
+    if (req.file) {
+        newTrainee = new trainee({
             name: req.body.name,
             email: req.body.email,
             dateOfBirth: new Date(req.body.date),
             education: req.body.education,
             img: req.file.filename
         });
-        try {
-            newTrainee = await newTrainee.save();
-            newAccount = await newAccount.save();
-            console.log(newTrainee);
-            res.redirect('/staff/trainee');
-        }
-        catch (error) {
-            console.log(error);
-            res.redirect('/staff/trainee');
-        }
-
-
+    } else {
+        newTrainee = new trainee({
+            name: req.body.name,
+            email: req.body.email,
+            dateOfBirth: new Date(req.body.date),
+            education: req.body.education
+        });
+    }
+    try {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newAccount.password, salt, (err, hash) => {
+                if (err) throw err;
+                newAccount.password = hash;
+                newAccount = newAccount.save();
+                newTrainee =  newTrainee.save();
+            });
+        });
+          
+        // console.log(newTrainee);
+        res.redirect('/staff/trainee');
+    }
+    catch (error) {
+        console.log(error);
+        res.redirect('/staff/trainee');
+    }
 }
 exports.editTrainee = async (req, res) => {
     let id = req.query.id;
@@ -111,7 +147,7 @@ exports.editTrainee = async (req, res) => {
 exports.doEditTrainee = async (req, res) => {
     let id = req.body.id;
     let aTrainee = await trainee.findById(id);
-    if(req.file){
+    if (req.file) {
         aTrainee.img = req.file.filename;
     }
     aTrainee.name = req.body.name;
