@@ -207,14 +207,14 @@ exports.searchTrainer = async (req, res) => {
     res.render('adminViewTrainer', { listTrainer: listTrainer, loginName: req.session.email });
 }
 
-exports.setDefaultPass = (req, res) => {
+exports.setDefaultPass = async(req, res) => {
     let id = req.query.id;
     console.log(id);
-    let aStaff = staff.findById(id);
-    let account = Account.findOne({ 'email': aStaff.email }).exec()
+    let aStaff = await staff.findById(id);
+    let account = await Account.findOne({ 'email': aStaff.email }).exec()
     account.password = "12345678";
     try {
-        bcrypt.genSalt(10, (err, salt) => {
+        await bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(account.password, salt, (err, hash) => {
                 if (err) throw err;
                 account.password = hash;
