@@ -35,7 +35,7 @@ router.post('/trainer/trainerEdit/doEditTrainer',upload.single('picture'), isTra
 //course
 router.get('/trainer/ViewCourses', isTrainer, trainerController.viewCourse);
 
-router.post('trainer/searchCourse', isTrainer, trainerController.searchCourse);
+router.post('/trainer/searchCourse', isTrainer, trainerController.searchCourse);
 
 //course detail
 
