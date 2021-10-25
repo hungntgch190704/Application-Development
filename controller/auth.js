@@ -2,7 +2,7 @@ const Account = require('../models/user');
 const trainee = require('../models/trainee');
 const trainer = require('../models/trainer');
 const courseDetail = require('../models/courseDetail')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 // exports.handleLogin = async (req, res) => {
 //     const username = req.body.username;
 //     const password = req.body.password;
@@ -95,7 +95,6 @@ exports.handleLogin = async (req, res) => {
                     req.session.user = user;
                     req.session.email = username;
                     req.session.trainer = true;
-                    req.session.courses = courses;
                     res.redirect('/trainer');
                 }
                 else {
@@ -110,12 +109,12 @@ exports.handleLogin = async (req, res) => {
             }
 
         })
-            .catch(err => {
-                console.log(err)
-            })
+            // .catch(err => {
+            //     console.log(err)
+            // })
     } catch (error) {
-        console.log(error);
-        res.render('index');
+        //console.log(error);
+        //return res.render('index');
     }
 };
 

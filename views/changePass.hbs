@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <div class="py-1">
-                    <form class="form" method="post" action="/admin/changeAdPass">
+                    <form class="form" method="post" action="/admin/dochangePass">
                         <div class="row">
                             <div class="col">
                                 <div class="row">
@@ -21,7 +21,7 @@
                                             <label>Current Password</label>
                                             <input class="form-control" type="password" placeholder="••••••"
                                                 name="current" required />
-                                            <span class="helper-text text-danger"></span>
+                                            <span class="helper-text text-danger">{{errors.current}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -30,7 +30,7 @@
                                         <div class="form-group">
                                             <label>New Password</label>
                                             <input class="form-control" type="password" placeholder="••••••" name="new">
-                                            <span class="helper-text text-danger"></span>
+                                            <span class="helper-text text-danger">{{errors.length}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -39,7 +39,7 @@
                                         <div class="form-group">
                                             <label>Confirm Password</label>
                                             <input class="form-control" type="password" placeholder="••••••" name="confirm">
-                                            <span class="helper-text text-danger"></span>
+                                            <span class="helper-text text-danger">{{errors.check}}</span>
                                         </div>
                                     </div>
                                 </div>
