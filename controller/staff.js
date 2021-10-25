@@ -8,7 +8,7 @@ const trainer = require('../models/trainer');
 const staff = require('../models/staff')
 const validation = require('./validation');
 const dbHandler = require('../db/dbHandler');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 exports.staffindex = async (req, res) => {
     res.render('staffIndex', { loginName: req.session.email });
