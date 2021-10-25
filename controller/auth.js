@@ -95,7 +95,7 @@ exports.handleLogin = async (req, res) => {
                     req.session.user = user;
                     req.session.email = username;
                     req.session.trainer = true;
-                    req.session.courses = courses;
+                    // req.session.courses = courses;
                     res.redirect('/trainer');
                 }
                 else {

@@ -31,6 +31,10 @@ exports.searchCategory = async (req, res) => {
     res.render('trainerCategory', { categories: categories, loginName : req.session.email});
 }
 
+exports.viewCourse = async(req,res)=>{
+    let courses = await course.find();
+    res.render('trainerViewCourse', {course: courses, loginName : req.session.email})
+}
 
 //search course
 exports.searchCourse = async (req, res) => {
@@ -39,13 +43,18 @@ exports.searchCourse = async (req, res) => {
     const searchCondition = new RegExp(searchText, 'i')
     let course = await course.find({ name: searchCondition });
     console.log(course);
-    res.render('trainerViewCourse', { course: course, loginName: req.session.email })
+    res.render('trainerViewCourse', { _course: course, loginName: req.session.email })
 }
     
 
 //course details
 exports.viewAssignedCourse = async (req, res) => {
-    res.render('trainerAssignedCourse', { course_detail: req.session.courses, loginName: req.session.email});
+    let username = req.session.email;
+    let aTrainer = await trainer.findOne({email: username});
+    let courses = await courseDetail.find({trainer : aTrainer.name});
+    console.log(courses);
+    // req.session.courses = courses;
+    res.render('trainerAssignedCourse', { course_detail: courses, loginName: req.session.email});
 }
 
 exports.viewAssignedCourseDetail = async (req, res) => {
@@ -77,10 +86,6 @@ exports.searchCourseDetail = async (req, res) => {
     res.render('trainerAssignedCourse', { _course_detail: course_detail, _keyword: searchText, loginName: req.session.email });
 }
 
-exports.viewCourse = async(req,res)=>{
-    let courses = await course.find();
-    res.render('trainerViewCourse', {courses: courses, loginName : req.session.email})
-}
 
 //trainee
 exports.viewTrainee = async (req, res) => {
@@ -146,35 +151,84 @@ exports.changePassword = async (req, res) => {
 
 //do change password
 exports.doChangePassword = async (req, res) => {
-    let acc = await Account.findOne({ email: req.session.email });
-    let password = acc.password;
-    let oldpw = req.body.old;
+    let acc = Account.findOne({ email: req.session.email });
+    let current = req.body.current;
     let newpw = req.body.new;
-    let confirmpw = req.body.confirm;
-    if (password != oldpw) {
-        let error = "Old password is incorrect!"
-        res.render('trainerChangePass', { error1: error, loginName: req.session.email })
+    let confirm = req.body.confirm;
+    let errors=[];
+    let flag = true;
+    try{
+        Account.findOne({email:req.session.email})
+        .then(user => {
+            bcrypt.compare(current, user.password)
+            .then((doMatch) => {
+                if(doMatch) {
+                    if(newpw.length <8){
+                        flag=false;
+                        errors[length] = "Password must contain 8 characters or more!";
+                    }
+                    if(newpw != confirm){
+                        flag=false;
+                        errors[check] = "New Password and Confirm Password do not match!"
+                    }
+                }
+                else{
+                    flag = false;
+                    errors[current] = "Old password is incorrect!";
+                }
+            })
+        })
+    } catch(err){
+        console.log(err);
     }
-    else if (newpw.length < 8) {
-        let error = "Password must contain 8 characters or more!"
-        res.render('trainerChangePass', { error2: error, loginName: req.session.email })
+    if(!flag){
+        res.render('changePass', {errors: errors, loginName: req.session.email})
     }
-    else if (newpw != confirmpw) {
-        let error = "New Password and Confirm Password do not match!"
-        res.render('trainerChangePass', { error3: error, loginName: req.session.email })
-    }
-    else {
-        acc.password = newpw;
-        let confirm = "Password changed successfully"
-        res.render('trainerChangePass', { confirm: confirm, loginName: req.session.email })
-        try {
-            acc = await acc.save();
-            req.session.user = acc;
-            res.redirect('/trainer');
+    else{
+        try{
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newpw, salt, (err, hash) => {
+                    if(err) throw err;
+                    acc.password = hash;
+                    acc =  acc.save();
+                    req.session.user = acc;
+                    res.redirect('/trainer')
+                })
+            })
+        } catch (err) {
+            console.log(err);
+            res.redirect('/trainer/changePassword')
         }
-        catch (error) {
-            console.log(error);
-            res.redirect('/trainer/changePassword');
-        }
     }
+    // let acc = await Account.findOne({ email: req.session.email });
+    // let password = acc.password;
+    // let oldpw = req.body.old;
+    // let newpw = req.body.new;
+    // let confirmpw = req.body.confirm;
+    // if (password != oldpw) {
+    //     let error = "Old password is incorrect!"
+    //     res.render('trainerChangePass', { error1: error, loginName: req.session.email })
+    // }
+    // else if (newpw.length < 8) {
+    //     let error = "Password must contain 8 characters or more!"
+    //     res.render('trainerChangePass', { error2: error, loginName: req.session.email })
+    // }
+    // else if (newpw != confirmpw) {
+    //     let error = "New Password and Confirm Password do not match!"
+    //     res.render('trainerChangePass', { error3: error, loginName: req.session.email })
+    // }
+    // else {
+    //     acc.password = newpw;
+    //     let confirm = "Password changed successfully"
+    //     res.render('trainerChangePass', { confirm: confirm, loginName: req.session.email })
+    //     try {
+    //         acc = await acc.save();
+    //         req.session.user = acc;
+    //         res.redirect('/trainer');
+    //     }
+    //     catch (error) {
+    //         console.log(error);
+    //         res.redirect('/trainer/changePassword');
+    //     }
+    // }
 }
