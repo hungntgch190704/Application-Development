@@ -121,7 +121,7 @@ exports.doAddTrainee = async (req, res) => {
         });
     }
     try {
-        bcrypt.genSalt(10, (err, salt) => {
+        await bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newAccount.password, salt, (err, hash) => {
                 if (err) throw err;
                 newAccount.password = hash;
@@ -150,8 +150,6 @@ exports.doEditTrainee = async (req, res) => {
     if (req.file) {
         aTrainee.img = req.file.filename;
     }
-    aTrainee.name = req.body.name;
-    aTrainee.email = req.body.email;
     aTrainee.dateOfBirth = new Date(req.body.date);
     aTrainee.education = req.body.education;
     try {
@@ -159,7 +157,7 @@ exports.doEditTrainee = async (req, res) => {
         res.redirect('/staff/trainee');
     }
     catch (error) {
-        console.log(error);
+        console.log()
         res.redirect('/staff/trainee');
     }
 
@@ -172,14 +170,10 @@ exports.deleteTrainee = async (req, res) => {
         { $pull: { trainees: name } }
     )
     let email = aTrainee.email;
-    console.log(name);
-    Account.deleteOne({ 'email': email }, (err) => {
-        if (err)
-            throw err;
-        else
-            console.log('Account is deleted');
-    })
-    trainee.findByIdAndRemove(id).then(data = {});
+    let acc= await Account.findOne({ 'email': email });
+    let idacc= acc.id;
+    await Account.findByIdAndRemove(idacc);
+    await trainee.findByIdAndRemove(id);
     res.redirect('/staff/trainee');
 }
 exports.searchTrainee = async (req, res) => {
@@ -197,12 +191,12 @@ exports.searchTrainee = async (req, res) => {
     else if (!checkAlphaName) {
         let finddate = new Date(searchText);
         trainees = await trainee.find({ dateOfBirth: finddate });
-        //console.log(finddate);
+        res.render('staffTrainee', { trainees: trainees, loginName: req.session.email });
     }
     else {
         trainees = await trainee.find({ name: searchCondition });
+        res.render('staffTrainee', { trainees: trainees, loginName: req.session.email });
     }
-    res.render('staffTrainee', { trainees: trainees, loginName: req.session.email });
 }
 
 //category
@@ -230,7 +224,6 @@ exports.editCategory = async (req, res) => {
 exports.doEditCategory = async (req, res) => {
     let id = req.body.id;
     let aCategory = await category.findById(id);
-    aCategory.categoryName = req.body.name;
     aCategory.description = req.body.description;
     try {
         aCategory = await aCategory.save();
@@ -244,12 +237,7 @@ exports.doEditCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
     let id = req.query.id;
     console.log(id);
-    category.deleteOne({ 'id': id }, (err) => {
-        if (err)
-            throw err;
-        else
-            console.log('Category is deleted');
-    });
+    await category.findByIdAndRemove(id);
     res.redirect('/staff/courseCategory');
 }
 exports.searchCategory = async (req, res) => {
