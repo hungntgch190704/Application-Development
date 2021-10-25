@@ -82,10 +82,10 @@ exports.handleLogin = (req, res) => {
                         req.session.user = user;
                         req.session.email = username;
                         req.session.trainer = true;
-                        let aTrainer = trainer.findOne({email: username});
-                        let courses = courseDetail.find({trainer : aTrainer.name});
-                        console.log(courses);
-                        req.session.courses = courses;
+                        // let aTrainer = trainer.findOne({email: username});
+                        // let courses = courseDetail.find({trainer : aTrainer.name});
+                        // console.log(courses);
+                        // req.session.courses = courses;
                         res.redirect('/trainer');
                     }
                     else {

@@ -8,11 +8,14 @@
     <div class="container py-5" style="margin-left: 10%">
         <div class="container rounded bg-white mt-5 mb-5">
             <div class="row">
-                <div class="col-md-3 border-right" style="padding-right: 20px;">
-                    <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                        <img class="rounded-circle mt-5" width="150px" src="/uploads/trainer/{{aTrainer.img}}">
+                <div class="col-md-4 border-right" style="padding-right: 20px;">
+                    <div class="d-flex flex-column align-items-center text-center p-3 py-3">
+                         {{#each aTrainer}}
+                        <img class="rounded-circle mt-5" width="150px" src="/uploads/trainer/{{img}}">
+                         {{/each}}
                     </div>
                 </div>
+                
                 
                 <div class="col-md-5 border-right">
                     <div class="p-3 py-5">
