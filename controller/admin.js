@@ -3,7 +3,7 @@ const staff = require('../models/staff');
 const trainer = require('../models/trainer');
 const validation = require('./validation');
 const courseDetail = require('../models/courseDetail');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 exports.getAdmin = async (req, res) => {
     res.render('admin', { loginName: req.session.email })

@@ -2,7 +2,7 @@ const trainee = require('../models/trainee');
 const Account = require('../models/user');
 const course = require('../models/course');
 const courseDetail = require('../models/courseDetail')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const express = require('express');
 

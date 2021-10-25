@@ -5,6 +5,7 @@ const course = require('../models/course');
 const category = require('../models/coursecategory');
 const courseDetail = require('../models/courseDetail')
 const validation = require('./validation');
+const bcrypt = require('bcryptjs');
 
 exports.getTrainer = async(req,res)=>{
     let email = req.session.email;
