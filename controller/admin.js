@@ -207,7 +207,7 @@ exports.searchTrainer = async (req, res) => {
     res.render('adminViewTrainer', { listTrainer: listTrainer, loginName: req.session.email });
 }
 
-exports.setDefaultPass = async(req, res) => {
+exports.setDefaultPassS = async(req, res) => {
     let id = req.query.id;
     console.log(id);
     let aStaff = await staff.findById(id);
@@ -227,6 +227,29 @@ exports.setDefaultPass = async(req, res) => {
     catch (error) {
         console.log(error);
         res.redirect('/admin/adminViewStaff');
+    }
+}
+
+exports.setDefaultPassT = async(req, res) => {
+    let id = req.query.id;
+    console.log(id);
+    let aTrainer = await trainer.findById(id);
+    let account = await Account.findOne({ 'email': aTrainer.email }).exec()
+    account.password = "12345678";
+    try {
+        await bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(account.password, salt, (err, hash) => {
+                if (err) throw err;
+                account.password = hash;
+                account = account.save();
+            })
+        })
+        // account = await account.save();
+        res.redirect('/admin/adminViewTrainer');
+    }
+    catch (error) {
+        console.log(error);
+        res.redirect('/admin/adminViewTrainer');
     }
 }
 
