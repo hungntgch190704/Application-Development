@@ -71,7 +71,9 @@ router.post('/admin/adminSearchStaff', isAdmin, adminController.searchStaff);
 
 router.post('/admin/adminSearchTrainer', isAdmin, adminController.searchTrainer);
 
-router.get('/admin/adminChangePassStaff', isAdmin, adminController.setDefaultPass);
+router.get('/admin/adminChangePassStaff', isAdmin, adminController.setDefaultPassS);
+
+router.get('/admin/adminChangePassTrainer', isAdmin, adminController.setDefaultPassT);
 
 router.get('/admin/changePass', isAdmin, adminController.getChangePass)
 

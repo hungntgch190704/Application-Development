@@ -11,13 +11,24 @@ exports.getAdmin = async (req, res) => {
 
 // add new staff
 exports.addStaff = (req, res) => {
-    let newStaff = new staff({
-        name: req.body.name,
-        email: req.body.email,
-        age: req.body.age,
-        address: req.body.address,
-        img: req.file.filename
-    })
+    let newStaff;
+    if(req.file){
+        newStaff = new staff({
+            name: req.body.name,
+            email: req.body.email,
+            age: req.body.age,
+            address: req.body.address,
+            img: req.file.filename
+        })
+    }
+    else{
+        newStaff = new staff({
+            name: req.body.name,
+            email: req.body.email,
+            age: req.body.age,
+            address: req.body.address
+        })
+    }
     let newAccount = new Account({
         email: req.body.email,
         password: "12345678",
@@ -36,14 +47,26 @@ exports.addStaff = (req, res) => {
 
 //add new trainer
 exports.addTrainer = (req, res) => {
-    let newTrainer = new trainer({
+    let newTrainer;
+    if(req.file){
+        newTrainer = new trainer({
         name: req.body.name,
         email: req.body.email,
         speciality: req.body.speciality,
         age: req.body.age,
         address: req.body.address,
         img: req.file.filename
-    })
+        })
+    }
+    else{
+        newTrainer = new trainer({
+        name: req.body.name,
+        email: req.body.email,
+        speciality: req.body.speciality,
+        age: req.body.age,
+        address: req.body.address,
+        })
+    }
     let newAccount = new Account({
         email: req.body.email,
         password: "12345678",
@@ -94,7 +117,7 @@ exports.updateStaff = async (req, res) => {
         aStaff.img = req.file.filename;
     }
     aStaff.name = req.body.name;
-    aStaff.email = req.body.email;
+    if(aStaff.email != null) aStaff.email=aStaff.email;
     aStaff.age = req.body.age;
     aStaff.address = req.body.address;
 
@@ -107,6 +130,7 @@ exports.updateStaff = async (req, res) => {
         res.redirect('/admin/adminViewStaff');
     }
 }
+
 
 exports.editTrainer = async (req, res) => {
     let id = req.query.id;
@@ -123,8 +147,8 @@ exports.updateTrainer = async (req, res) => {
         console.log(req.file.filename);
     }
     console.log(req.body.name);
-    aTrainer.name = req.body.name;
-    aTrainer.email = req.body.email;
+    // aTrainer.name = req.body.name;
+    if(aTrainer.email != null) aTrainer.email=aTrainer.email;
     aTrainer.speciality = req.body.speciality;
     aTrainer.age = req.body.age;
     aTrainer.address = req.body.address;
@@ -207,14 +231,14 @@ exports.searchTrainer = async (req, res) => {
     res.render('adminViewTrainer', { listTrainer: listTrainer, loginName: req.session.email });
 }
 
-exports.setDefaultPass = (req, res) => {
+exports.setDefaultPassS = async(req, res) => {
     let id = req.query.id;
     console.log(id);
-    let aStaff = staff.findById(id);
-    let account = Account.findOne({ 'email': aStaff.email }).exec()
+    let aStaff = await staff.findById(id);
+    let account = await Account.findOne({ 'email': aStaff.email }).exec()
     account.password = "12345678";
     try {
-        bcrypt.genSalt(10, (err, salt) => {
+        await bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(account.password, salt, (err, hash) => {
                 if (err) throw err;
                 account.password = hash;
@@ -227,6 +251,29 @@ exports.setDefaultPass = (req, res) => {
     catch (error) {
         console.log(error);
         res.redirect('/admin/adminViewStaff');
+    }
+}
+
+exports.setDefaultPassT = async(req, res) => {
+    let id = req.query.id;
+    console.log(id);
+    let aTrainer = await trainer.findById(id);
+    let account = await Account.findOne({ 'email': aTrainer.email }).exec()
+    account.password = "12345678";
+    try {
+        await bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(account.password, salt, (err, hash) => {
+                if (err) throw err;
+                account.password = hash;
+                account = account.save();
+            })
+        })
+        // account = await account.save();
+        res.redirect('/admin/adminViewTrainer');
+    }
+    catch (error) {
+        console.log(error);
+        res.redirect('/admin/adminViewTrainer');
     }
 }
 
