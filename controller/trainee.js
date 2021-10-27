@@ -84,12 +84,12 @@ exports.doChangePassword = async (req, res) => {
                 }
                 else {
                     flag = false;
-                    console.log(acc.password);
+                    //console.log(acc.password);
                     Object.assign(errors, { current: "Old password is incorrect!" });
                 }
             });
-        console.log(flag);
-        console.log(errors);
+        // console.log(flag);
+        // console.log(errors);
         if (!flag) {
             res.render('traineeChangePass', { errors: errors, loginName: req.session.email })
         }
