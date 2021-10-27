@@ -20,7 +20,7 @@
                                         <div class="form-group">
                                             <label>Old Password</label>
                                             <input class="form-control" type="password" placeholder="••••••" name="old" required/ >
-                                            <span class="helper-text text-danger">{{error1}}</span>
+                                            <span class="helper-text text-danger">{{errors.current}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -29,7 +29,7 @@
                                         <div class="form-group">
                                             <label>New Password</label>
                                             <input class="form-control" type="password" placeholder="••••••" name="new" required/>
-                                            <span class="helper-text text-danger">{{error2}}</span>
+                                            <span class="helper-text text-danger">{{errors.length}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -38,7 +38,7 @@
                                         <div class="form-group">
                                             <label>Confirm Password</label>
                                             <input class="form-control" type="password" placeholder="••••••" name="confirm" required/>
-                                            <span class="helper-text text-danger">{{confirm}}{{error3}}</span>
+                                            <span class="helper-text text-danger">{{confirm}}{{errors.check}}</span>
                                         </div>
                                     </div>
                                 </div>
