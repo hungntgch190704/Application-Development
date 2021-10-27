@@ -22,18 +22,17 @@ const upload = multer({
     },
 })
 
-router.get('/trainee', isTrainee, traineeController.getTrainee);
+router.get('/trainee', isTrainee, traineeController.getTrainee)
 
-router.get('/trainee/updateProfile', isTrainee, traineeController.getProfile);
+router.get('/trainee/updateProfile', isTrainee, traineeController.getProfile)
 
-router.post('/doUpdateProfileTrainee', upload.single('picture'), isTrainee, traineeController.updateProfile);
+router.post('doUpdateProfileTrainee', upload.single('picture'), isTrainee, traineeController.updateProfile)
 
-router.get('/trainee/viewCourse', isTrainee, traineeController.viewAllCourse);
+router.get('trainee/viewCourse', isTrainee, traineeController.viewAllCourse)
 
-router.get('/trainee/courseDetail/view',isTrainee,  traineeController.viewCourseDetail);
+router.get('trainee/courseDetail/view', isTrainee, traineeController.viewCourseDetail)
 
-router.get('/trainee/changePassword',isTrainee,  traineeController.changePassword);
+router.get('trainee/changePassword', isTrainee, traineeController.changePassword)
 
-router.post('/trainee/doChangePassword', isTrainee, traineeController.doChangePassword);
-
+router.get('trainee/doChangePassword', isTrainee, traineeController.doChangePassword)
 module.exports = router;
