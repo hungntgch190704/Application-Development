@@ -29,12 +29,6 @@ exports.updateProfile = async(req,res)=>{
     res.redirect('/trainee');
 }
 
-//view course
-exports.viewAllCourse = async(req,res)=>{
-    console.log( req.session.courses)
-    res.render('traineeViewCourse',{courseDetail: req.session.courses,  loginName : req.session.email})
-}
-
 //View course detail
 exports.viewCourseDetail= async(req,res)=>{
     let id = req.query.id;
@@ -56,6 +50,11 @@ exports.viewCourseDetail= async(req,res)=>{
     });
 }
 
+//view course
+exports.viewAllCourse = async(req,res)=>{
+    console.log( req.session.courses)
+    res.render('traineeViewCourse',{courseDetail: req.session.courses,  loginName : req.session.email})
+}
 
 //change password
 exports.changePassword = async (req, res) => {
@@ -85,12 +84,12 @@ exports.doChangePassword = async (req, res) => {
                 }
                 else {
                     flag = false;
-                    console.log(acc.password);
+                    //console.log(acc.password);
                     Object.assign(errors, { current: "Old password is incorrect!" });
                 }
             });
-        console.log(flag);
-        console.log(errors);
+        // console.log(flag);
+        // console.log(errors);
         if (!flag) {
             res.render('traineeChangePass', { errors: errors, loginName: req.session.email })
         }
