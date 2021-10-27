@@ -29,6 +29,7 @@ exports.updateProfile = async(req,res)=>{
     res.redirect('/trainee');
 }
 
+//View course detail
 exports.viewCourseDetail= async(req,res)=>{
     let id = req.query.id;
     let course_detail = await courseDetail.findById(id);
